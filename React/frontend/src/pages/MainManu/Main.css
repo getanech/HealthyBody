@@ -1,0 +1,8 @@
+.menuContainer{
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   background-color: black;
+   width: 70%;
+   height: 60%;
+   /* border: 15px solid black; */
+}
