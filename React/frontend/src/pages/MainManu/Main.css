@@ -10,6 +10,7 @@
 .menuPanel {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
 	background-color: rgba(0, 0, 0, 0.8);
 	width: 70%;
 	height: 80%;
@@ -20,6 +21,7 @@
 	border: 1px solid rgba(255, 255, 255, 0.5);
 	padding: 3rem;
 	gap: 1rem;
+	direction: rtl;
 }
 
 .menuOption {
@@ -31,4 +33,9 @@
 	justify-content: center;
 	align-items: center;
 	box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0.5);
+	flex-grow: 1;
+}
+
+.dayView {
+	grid-row: span 2;
 }
