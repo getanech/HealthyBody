@@ -6,10 +6,12 @@
 	align-items: center;
 }
 .workoutDataContainer {
-	width: 90%;
+	width: 100%;
 	height: 90%;
 	display: flex;
 	flex-direction: column;
+	text-align: center;
+	/* gap: 0.25rem; */
 }
 
 .workoutTable {
@@ -25,8 +27,6 @@
 	flex-grow: 1;
 	display: grid;
 	grid-template-columns: 1fr 3fr;
-	/* justify-content: center; */
-	/* align-items: center; */
 	width: 100%;
 	height: 100%;
 	border: 1px solid white;
@@ -52,4 +52,19 @@
 	display: grid;
 	grid-template-columns: 1.5fr 2fr 1fr 1fr;
 	text-align: center;
+}
+
+.tableHeaders {
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+	width: 100%;
+	/* height: 100%; */
+	/* border: 1px solid white; */
+}
+
+.exerciseHeaders {
+	width: 100%;
+	/* max-height: 100%; */
+	display: grid;
+	grid-template-columns: 2fr 1fr 1fr;
 }

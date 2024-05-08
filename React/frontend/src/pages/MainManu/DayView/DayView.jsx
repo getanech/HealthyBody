@@ -5,40 +5,46 @@ import { json } from "react-router-dom";
 
 export default function DayView({ date }) {
 	const [workoutData, setWorkoutData] = useState(null);
-
+	const [selectedDate, setSelectedDate] = useState(null);
 	useEffect(() => {
 		fetchData();
-	}, []);
+	}, [date]);
 
 	const fetchData = () => {
-		const data = mockData.users[0].workouts[0];
-		console.log("data", data);
-		setWorkoutData(data);
+		const workouts = mockData.users[0].workouts;
+		for (let i = 0; i < workouts.length; i++) {
+			console.log(
+				'workouts[i].date == date.toLocaleDateString("he-IL")',
+				workouts[i].date == date.toLocaleDateString("he-IL")
+			);
+			if (workouts[i].date == date.toLocaleDateString("he-IL")) {
+				setWorkoutData(workouts[i]);
+				return;
+			}
+		}
+		setWorkoutData(null);
 	};
 
 	const showWorkoutData = () => {
 		if (!workoutData) return <></>;
 		return (
 			<div className="workoutDataContainer">
-				<h4>משך האימון: {workoutData.duration} דקות</h4>
-				<h4>קבוצות שרירים:</h4>
-				<div className="workoutHeaders">
+				<label style={{ fontWeight: "bold" }}>
+					משך האימון: {workoutData.duration} דקות
+				</label>
+				<label>קבוצות שרירים:</label>
+				<div className="tableHeaders">
 					<p>שריר</p>
-					<p>תרגיל</p>
-					<p>חזרות</p>
-					<p>משקל</p>
+					<div className="exerciseHeaders">
+						<p>תרגיל</p>
+						<p>חזרות</p>
+						<p>משקל</p>
+					</div>
 				</div>
-				<div
-					className="workoutTable"
-					// style={{ gridTemplateRows: `${workoutData.muscles.length}` }}
-				>
+				<div className="workoutTable">
 					{workoutData.muscles.map((muscle, index) => {
 						return (
-							<div
-								className="muscleInfo"
-								// style={{ gridRow: `1 / span ${muscle.exercises.length}` }}
-								key={index}
-							>
+							<div className="muscleInfo" key={index}>
 								<h3>{muscle.muscle}</h3>
 								<div>
 									{muscle.exercises.map((exercise, index) => {

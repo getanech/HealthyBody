@@ -1,0 +1,40 @@
+.weekDaysContainer {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	gap: 1.5rem;
+}
+
+.weekDayCell {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 0.5px solid rgba(255, 255, 255, 1);
+	border-radius: 15px;
+	padding: 0.5rem;
+
+	&:hover {
+		cursor: pointer;
+		background-color: rgba(255, 255, 255, 0.5);
+		color: black;
+		font-weight: bold;
+	}
+}
+
+.dayName {
+	font-weight: bold;
+}
+
+.dayDate {
+	font-size: 11px;
+}
+
+.current {
+	background-color: rgba(255, 255, 255, 0.5);
+	color: black;
+	font-weight: bold;
+}
