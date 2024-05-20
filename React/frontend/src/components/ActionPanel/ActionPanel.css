@@ -1,0 +1,16 @@
+.actionPanelContainer {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 0.5rem;
+	justify-items: center;
+	& button {
+		width: 5rem;
+		height: 5rem;
+		border-radius: 50%;
+		background-color: rgba(255, 255, 255, 0.5);
+		color: black;
+		font-weight: bold;
+	}
+	width: 100%;
+	height: 100%;
+}
