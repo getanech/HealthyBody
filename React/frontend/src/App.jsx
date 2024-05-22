@@ -12,8 +12,8 @@ function App() {
 			{/* <Header /> */}
 			<div className="bodyContainer">
 				<Routes>
-					<Route path="/" element={<Main />} />
-					<Route path="/login" element={<Login />} />
+					<Route path="/home" element={<Main />} />
+					<Route path="/" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 				</Routes>
 			</div>
