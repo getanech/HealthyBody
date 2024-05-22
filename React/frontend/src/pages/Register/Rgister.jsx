@@ -32,7 +32,7 @@ export default function Register() {
 		const response = await userRequests.register(data);
 		if (response.status === 200) {
 			alert("Register successfully!");
-			useNavigate1("/login");
+			useNavigate1("/");
 		} else {
 			alert("Register failed.");
 		}
@@ -91,7 +91,7 @@ export default function Register() {
 					<input ref={passwordRef} />
 				</div>
 				<button onClick={handleRegister}>Submit</button>
-				<button onClick={() => useNavigate1("/login")}>Back</button>
+				<button onClick={() => useNavigate1("/")}>Back</button>
 			</div>
 		</div>
 	);
