@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import "./login.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import userRequests from "../../api/userRequests";
 import Modal from "../../components/Modal/Modal";
 
 export default function Login() {
+	const [popContent, setPopContent] = useState(<></>);
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const navigate = useNavigate();
@@ -23,17 +24,25 @@ export default function Login() {
 			password: passwordRef.current.value,
 		};
 		const response = await userRequests.login(data);
-		console.log("response", response);
-		if (response.status === 200) {
-			navigate("/home");
-		} else {
-			alert("Login failed");
+
+		if (!response || response.status != 200) {
+			showModal("Login failed");
+			return;
 		}
+		navigate("/home");
+	};
+
+	const showModal = (message) => {
+		setPopContent(<Modal message={message} close={closeModal} />);
+	};
+
+	const closeModal = () => {
+		setPopContent(<></>);
 	};
 
 	return (
 		<div style={pageStyle}>
-			<Modal />
+			{popContent}
 			<div className="loginContainer">
 				<div className="loginPanel">
 					<h1>Login</h1>

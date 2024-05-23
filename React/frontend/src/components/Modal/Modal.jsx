@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
 import "./Modal.css";
-export default function Modal() {
-  return (
-    <div className="modalWrapper">
-        <div className='modal' >
-            <p>i love pizza</p>
-            <button>123</button>
-        </div>
-    </div>
-  )
+export default function Modal({ message, close }) {
+	return (
+		<div className="modalWrapper">
+			<div className="modal">
+				<h2>{message}</h2>
+				<button onClick={close}>Close</button>
+			</div>
+		</div>
+	);
 }

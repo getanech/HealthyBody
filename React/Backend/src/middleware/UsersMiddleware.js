@@ -1,4 +1,5 @@
 const userServices = require("../services/UserServices");
+const tokenUtil = require("../utils/tokenUtil");
 
 const UsersMiddleware = {
 	register: async (req, res, next) => {
@@ -8,6 +9,10 @@ const UsersMiddleware = {
 
 	login: async (req, res, next) => {
 		const response = await userServices.login(req, res, next);
+		if(response.success) {
+			const token = tokenUtil.generateToken(response.data);
+			response.data.toJ
+		}
 		return res
 			.status(response.status)
 			.json({ message: response.message, data: response.data });
