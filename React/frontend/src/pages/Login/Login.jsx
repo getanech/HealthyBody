@@ -2,11 +2,11 @@ import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { useRef } from "react";
 import userRequests from "../../api/userRequests";
+import Modal from "../../components/Modal/Modal";
 
 export default function Login() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
-
 	const navigate = useNavigate();
 
 	const pageStyle = {
@@ -33,6 +33,7 @@ export default function Login() {
 
 	return (
 		<div style={pageStyle}>
+			<Modal />
 			<div className="loginContainer">
 				<div className="loginPanel">
 					<h1>Login</h1>
