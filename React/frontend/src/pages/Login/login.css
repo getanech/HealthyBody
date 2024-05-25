@@ -55,6 +55,7 @@
 
 .loginContainer button {
 	color: white;
+	width: 22rem;
 	padding: 0.5rem;
 	background-color: transparent;
 	border: 1px solid white;
