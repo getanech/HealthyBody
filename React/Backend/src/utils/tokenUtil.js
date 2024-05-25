@@ -10,7 +10,7 @@ const tokenUtil = {
 		};
 
 		const options = {
-			expiresIn: "never",
+			expiresIn: "365d",
 		};
 
 		return jwt.sign(payload, secretKey, options);

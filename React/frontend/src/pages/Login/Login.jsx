@@ -1,14 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import "./login.css";
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import userRequests from "../../api/userRequests";
 import Modal from "../../components/Modal/Modal";
+import UserContext from "../../context/UserContext";
 
 export default function Login() {
+	const { user, updateUser } = useContext(UserContext);
 	const [popContent, setPopContent] = useState(<></>);
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (user) {
+			navigate("/home");
+		}
+	}, [user]);
 
 	const pageStyle = {
 		display: "flex",
@@ -29,6 +37,8 @@ export default function Login() {
 			showModal("Login failed");
 			return;
 		}
+
+		updateUser(response.data.data);
 		navigate("/home");
 	};
 

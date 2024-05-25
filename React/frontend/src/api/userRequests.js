@@ -7,6 +7,7 @@ const userRequests = {
 	},
 	login: async (data) => {
 		try {
+			console.log("data", data);
 			const response = await axios.post(
 				"http://localhost:5000/users/login",
 				data

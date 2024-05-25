@@ -9,9 +9,10 @@ const UsersMiddleware = {
 
 	login: async (req, res, next) => {
 		const response = await userServices.login(req, res, next);
-		if(response.success) {
+		console.log("response", response);
+		if (response.success) {
 			const token = tokenUtil.generateToken(response.data);
-			response.data.toJ
+			response.data.toJ;
 		}
 		return res
 			.status(response.status)
