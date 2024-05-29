@@ -15,9 +15,11 @@ connectToServer();
 
 const cors = require("cors");
 const userRoute = require("./router/userRoute");
+const workoutRouter = require("./router/workoutsRouter");
 
 app.use(cors());
 app.use("/users", userRoute);
+app.use("/workouts", workoutRouter);
 
 app.listen(port, () =>
 	console.log(`[SERVER]\t\tServer is running on port: ${port}!`)

@@ -1,16 +1,20 @@
-const Workout = require("../models/WorkoutModel.js")
+const Workout = require("../models/WorkoutModel.js");
 
 const WorkoutService = {
 	createWorkout: async (data) => {
-		const workout = new Workout (data);
+		const workout = new Workout(data);
 		const response = await workout.save();
 		console.log("response", response);
 		return workout;
 	},
 
-	getAllWorkout: async (req, res) => {
+	getAllWorkouts: async (req, res) => {
 		const response = await Workout.find();
-        return response
+		return {
+			status: 200,
+			message: "Workouts fetched successfully",
+			data: response,
+		};
 	},
 };
 

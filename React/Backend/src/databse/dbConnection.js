@@ -8,9 +8,6 @@ const exerciseService = require("../services/ExcerciseService");
 const WorkoutService = require("../services/WorkoutService");
 const defaultWorkouts = require("../mockData/WorkoutData");
 
-
-
-
 const uri = "1234";
 const connectToServer = async () => {
 	try {
@@ -23,23 +20,21 @@ const connectToServer = async () => {
 		for (let name in mongoose.connection.collections) {
 			console.log(`\t\t\t\t${name}`);
 		}
-		loadMockData()
+		loadMockData();
 	} catch (error) {
 		console.error(error);
 	}
 };
 
 const loadMockData = async () => {
-	
 	// await addDefaultExercises();
 	// const res = await exerciseService.getAllExercises()
-	const res = await addDefaultWorkouts()
-	console.log(res)
-
-}
+	// const res = await addDefaultWorkouts()
+	// console.log(res)
+};
 async function addDefaultWorkouts() {
 	for (let ex of defaultWorkouts) {
-	const res = await WorkoutService.createWorkout(ex);
+		const res = await WorkoutService.createWorkout(ex);
 	}
 }
 async function addDefaultExercises() {
@@ -49,5 +44,3 @@ async function addDefaultExercises() {
 }
 
 module.exports = { connectToServer };
-
-

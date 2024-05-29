@@ -5,13 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function ActionPanel() {
 	const { user, removeUser } = useContext(UserContext);
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	return (
 		<div className="actionPanelContainer">
 			<button>אימון חדש</button>
 			<button onClick={() => navigate("/workouts")}>My workout plan</button>
-			<button >1234</button>
-			<button>Action</button>
+			<button>1234</button>
 			<button>Action</button>
 			<button>Action</button>
 			<button>Action</button>

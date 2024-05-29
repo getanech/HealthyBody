@@ -1,28 +1,11 @@
-.menuContainer {
-	width: 100%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	background-color: rgba(122, 122, 122, 0.5);
-}
-
 .menuPanel {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 1fr 1fr;
-	background-color: rgba(0, 0, 0, 0.8);
-	width: 70%;
-	height: 80%;
-	border-radius: 15px;
-	box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-		rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-		rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-	border: 1px solid rgba(255, 255, 255, 0.5);
-	padding: 3rem;
-	gap: 1rem;
+	grid-template-rows: 0.5fr 1fr;
+	width: 100%;
+	height: 100%;
 	direction: rtl;
+	gap: 1rem;
 }
 
 .menuOption {
@@ -34,14 +17,17 @@
 	justify-content: center;
 	align-items: center;
 	box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0.5);
-	flex-grow: 1;
+	/* flex-grow: 1; */
 }
 
 .dayView {
 	grid-row: span 2;
 }
 
-.userGreeting{
-	color: white
+.userGreeting {
+	color: white;
 }
 
+.actionPanel {
+	/* flex-grow: 1; */
+}

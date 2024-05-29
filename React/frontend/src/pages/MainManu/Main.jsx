@@ -20,22 +20,22 @@ export default function Main() {
 
 	return (
 		<div className="menuContainer">
-			<div className="userGreeting">
-				<h4>Hello {user.firstName} {user.lastName}</h4>
-			</div>
-			<div className="menuPanel">
-				<div className="menuOption dayView">
-					<DayView date={selectedDate} />
-				</div>
-				<div className="menuOption">
-					<ActionPanel />
-				</div>
-				<div className="menuOption">
-					<DayPicker setDate={setSelectedDate} selectedDate={selectedDate} />
+			<div className="contentWrapper">
+				<h4>
+					Hello {user.firstName} {user.lastName}
+				</h4>
+				<div className="menuPanel">
+					<div className="menuOption dayView">
+						<DayView date={selectedDate} />
+					</div>
+					<div className="menuOption actionPanel">
+						<ActionPanel />
+					</div>
+					<div className="menuOption">
+						<DayPicker setDate={setSelectedDate} selectedDate={selectedDate} />
+					</div>
 				</div>
 			</div>
 		</div>
-
-
 	);
 }
