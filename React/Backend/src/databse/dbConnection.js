@@ -5,6 +5,8 @@ const WorkoutModel = require("../models/WorkoutModel");
 
 const defaultExercise = require("../mockData/ExerciseData");
 const exerciseService = require("../services/ExcerciseService");
+const WorkoutService = require("../services/WorkoutService");
+const defaultWorkouts = require("../mockData/WorkoutData");
 
 
 
@@ -31,9 +33,15 @@ const loadMockData = async () => {
 	
 	// await addDefaultExercises();
 	// const res = await exerciseService.getAllExercises()
-	// console.log(res)
-}
+	const res = await addDefaultWorkouts()
+	console.log(res)
 
+}
+async function addDefaultWorkouts() {
+	for (let ex of defaultWorkouts) {
+	const res = await WorkoutService.createWorkout(ex);
+	}
+}
 async function addDefaultExercises() {
 	for (let ex of defaultExercise) {
 		const res = await exerciseService.createExercise(ex);

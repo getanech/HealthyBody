@@ -20,6 +20,9 @@ export default function Main() {
 
 	return (
 		<div className="menuContainer">
+			<div className="userGreeting">
+				<h4>Hello {user.firstName} {user.lastName}</h4>
+			</div>
 			<div className="menuPanel">
 				<div className="menuOption dayView">
 					<DayView date={selectedDate} />
@@ -32,5 +35,7 @@ export default function Main() {
 				</div>
 			</div>
 		</div>
+
+
 	);
 }
