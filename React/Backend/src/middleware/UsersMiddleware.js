@@ -8,7 +8,6 @@ const UsersMiddleware = {
 	},
 
 	login: async (req, res, next) => {
-		console.log("req", req);
 		const response = await userServices.login(req, res, next);
 		console.log("response", response);
 		if (response.success) {
