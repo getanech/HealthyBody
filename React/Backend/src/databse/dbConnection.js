@@ -27,6 +27,7 @@ const connectToServer = async () => {
 };
 
 const loadMockData = async () => {
+	resetAllExerciseReps();
 	// await addDefaultExercises();
 	// const res = await exerciseService.getAllExercises()
 	// const res = await addDefaultWorkouts()
@@ -42,5 +43,28 @@ async function addDefaultExercises() {
 		const res = await exerciseService.createExercise(ex);
 	}
 }
+
+const resetAllExerciseReps = async () => {
+	const allWorkouts = await WorkoutService.getAllWorkouts();
+	workoutObject = allWorkouts.data[0];
+
+	for (const exercise of workoutObject.exercises) {
+		// console.log("exercise", exercise);
+		const response = await WorkoutService.updateExerciseReps({
+			params: { workoutId: workoutObject._id, exerciseId: exercise._id },
+			body: { reps: 12 },
+		});
+		// console.log(response);
+	}
+	// for (const workout of allWorkouts.data) {
+	// 	for (const exercise of workout.exercises) {
+	// 		const response = await WorkoutService.updateExerciseReps({
+	// 			params: { workoutId: workout._id, exerciseId: exercise._id },
+	// 			body: { reps: 12 },
+	// 		});
+	// 		console.log(response);
+	// 	}
+	// }
+};
 
 module.exports = { connectToServer };
