@@ -1,10 +1,13 @@
 import workoutsApi from "../../api/workoutRequests";
 import "./Workout.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WorkoutCard from "./WorkoutCard";
+import WorkoutModal from "../../components/WorkoutModal/WorkoutModal";
+
 
 export default function Workout() {
 	const [workoutData, setWorkoutData] = useState([]);
+	const [selectedWorkout, setSelectedWorkout] = useState(null)
 
 	const refreshWorkoutData = async () => {
 		try {
@@ -19,18 +22,22 @@ export default function Workout() {
 		refreshWorkoutData();
 	}, []);
 
+
 	const renderWorkoutCards = () => {
 		return (
 			<div className="workoutCardsGrid">
-				{workoutData.map((workout) => (
-					<WorkoutCard key={workout.id} workout={workout} />
+				{workoutData.map((workout, index) => (
+					<WorkoutCard key={index} setSelectedWorkout={setSelectedWorkout} workout={workout} />
 				))}
 			</div>
 		);
 	};
 
+
+
 	return (
 		<div className="menuContainer">
+			{selectedWorkout && <WorkoutModal workout={selectedWorkout}/>}
 			<div className="contentWrapper">
 				<div className="tabPanel">
 					<button>My Workouts</button>

@@ -9,7 +9,7 @@ const WorkoutService = {
 	},
 
 	getAllWorkouts: async (req, res) => {
-		const response = await Workout.find();
+		const response = await Workout.find().populate('exercises');
 		return {
 			status: 200,
 			message: "Workouts fetched successfully",

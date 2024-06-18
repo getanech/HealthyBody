@@ -14,7 +14,7 @@ const userRequests = {
 			);
 			return response;
 		} catch (error) {
-			console.log(error);
+			console.log("LOGIN ERROR", error);
 			return error.response;
 		}
 	},

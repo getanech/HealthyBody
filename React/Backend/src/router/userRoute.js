@@ -5,8 +5,8 @@ const userRoute = express.Router();
 
 userRoute.post("/", UsersMiddleware.register);
 userRoute.post("/login", UsersMiddleware.login);
-// userRoute.post("/", (req, res) => {
-// 	return res.status(200).json({ response: "123456" });
-// });
+userRoute.post("/", (req, res) => {
+	return res.status(200).json({ response: "123456" });
+});
 
 module.exports = userRoute;
