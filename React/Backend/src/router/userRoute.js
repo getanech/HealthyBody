@@ -8,5 +8,6 @@ userRoute.post("/login", UsersMiddleware.login);
 userRoute.post("/", (req, res) => {
 	return res.status(200).json({ response: "123456" });
 });
+userRoute.post("/workouts", UsersMiddleware.addUserWorkout);
 
 module.exports = userRoute;

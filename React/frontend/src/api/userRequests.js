@@ -18,5 +18,20 @@ const userRequests = {
 			return error.response;
 		}
 	},
+
+	addUserWorkout: async (userId, workout) => {
+		const response = await axios.post(
+			"http://localhost:5000/users/workouts",
+			{
+				workout,
+			},
+			{
+				params: {
+					userId: userId,
+				},
+			}
+		);
+		return response;
+	},
 };
 export default userRequests;
