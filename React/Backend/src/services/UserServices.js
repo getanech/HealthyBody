@@ -37,6 +37,33 @@ const userServices = {
 			data: user,
 		};
 	},
+
+	addWorkout: async (req, res) => {
+		try {
+			const user = await User.findById(req.query.userId);
+
+			if (!user.workouts) user.workouts = [];
+			await user.save();
+
+			user.workouts.push(req.body.workout);
+			await user.save();
+
+			return {
+				success: true,
+				message: "Workout added successfully",
+				status: 200,
+				data: user,
+			};
+		} catch (error) {
+			console.log("error", error);
+			return {
+				success: false,
+				message: "Error adding workout",
+				status: 500,
+				data: null,
+			};
+		}
+	},
 };
 
 module.exports = userServices;

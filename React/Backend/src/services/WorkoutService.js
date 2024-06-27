@@ -43,10 +43,25 @@ const WorkoutService = {
 	},
 
 	getAllWorkouts: async (req, res) => {
-		const response = await Workout.find().populate("exercises");
+		const response = await Workout.find().populate({
+			path: "exercises",
+			populate: {
+				path: "exercise",
+				model: "exercise",
+			},
+		});
 		return {
 			status: 200,
 			message: "Workouts fetched successfully",
+			data: response,
+		};
+	},
+
+	deleteAllWorkouts: async (req, res) => {
+		const response = await Workout.deleteMany();
+		return {
+			status: 200,
+			message: "Workouts deleted successfully",
 			data: response,
 		};
 	},

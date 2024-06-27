@@ -27,15 +27,16 @@ const connectToServer = async () => {
 };
 
 const loadMockData = async () => {
-	resetAllExerciseReps();
+	// resetAllExerciseReps();
 	// await addDefaultExercises();
 	// const res = await exerciseService.getAllExercises()
-	// const res = await addDefaultWorkouts()
 	// console.log(res)
+	// await WorkoutService.deleteAllWorkouts();
+	// const res = await addDefaultWorkouts();
 };
 async function addDefaultWorkouts() {
-	for (let ex of defaultWorkouts) {
-		const res = await WorkoutService.createWorkout(ex);
+	for (let workout of defaultWorkouts) {
+		const res = await WorkoutService.createWorkout(workout);
 	}
 }
 async function addDefaultExercises() {
@@ -44,27 +45,27 @@ async function addDefaultExercises() {
 	}
 }
 
-const resetAllExerciseReps = async () => {
-	const allWorkouts = await WorkoutService.getAllWorkouts();
-	workoutObject = allWorkouts.data[0];
+// const resetAllExerciseReps = async () => {
+// 	const allWorkouts = await WorkoutService.getAllWorkouts();
+// 	workoutObject = allWorkouts.data[0];
 
-	for (const exercise of workoutObject.exercises) {
-		// console.log("exercise", exercise);
-		const response = await WorkoutService.updateExerciseReps({
-			params: { workoutId: workoutObject._id, exerciseId: exercise._id },
-			body: { reps: 12 },
-		});
-		// console.log(response);
-	}
-	// for (const workout of allWorkouts.data) {
-	// 	for (const exercise of workout.exercises) {
-	// 		const response = await WorkoutService.updateExerciseReps({
-	// 			params: { workoutId: workout._id, exerciseId: exercise._id },
-	// 			body: { reps: 12 },
-	// 		});
-	// 		console.log(response);
-	// 	}
-	// }
-};
+// 	for (const exercise of workoutObject.exercises) {
+// 		// console.log("exercise", exercise);
+// 		const response = await WorkoutService.updateExerciseReps({
+// 			params: { workoutId: workoutObject._id, exerciseId: exercise._id },
+// 			body: { reps: 12 },
+// 		});
+// 		// console.log(response);
+// 	}
+// 	// for (const workout of allWorkouts.data) {
+// 	// 	for (const exercise of workout.exercises) {
+// 	// 		const response = await WorkoutService.updateExerciseReps({
+// 	// 			params: { workoutId: workout._id, exerciseId: exercise._id },
+// 	// 			body: { reps: 12 },
+// 	// 		});
+// 	// 		console.log(response);
+// 	// 	}
+// 	// }
+// };
 
 module.exports = { connectToServer };

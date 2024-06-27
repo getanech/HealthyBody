@@ -36,6 +36,13 @@ const UsersMiddleware = {
 			.status(403)
 			.json({ message: "You are not authorized to access this route" });
 	},
+
+	addUserWorkout: async (req, res, next) => {
+		const response = await userServices.addWorkout(req, res, next);
+		return res
+			.status(response.status)
+			.json({ message: response.message, data: response.data });
+	},
 };
 
 module.exports = UsersMiddleware;
