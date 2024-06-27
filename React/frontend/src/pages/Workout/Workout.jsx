@@ -32,9 +32,6 @@ export default function Workout() {
 			</div>
 		);
 	};
-
-
-
 	return (
 		<div className="menuContainer">
 			{selectedWorkout && <WorkoutModal workout={selectedWorkout}/>}

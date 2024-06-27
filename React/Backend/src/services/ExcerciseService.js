@@ -8,6 +8,8 @@ const exerciseService = {
 		return excercise;
 	},
 
+	
+
 	getAllExercises: async (req, res) => {
 		const response = await Excercise.find();
         return response
