@@ -37,9 +37,6 @@ export default function Workout() {
 			</div>
 		);
 	};
-<<<<<<< HEAD
-=======
-
 	const addWorkoutToMyWorkouts = async (workout) => {
 		try {
 			const res = await userRequests.addUserWorkout(user._id, workout._id);
@@ -52,7 +49,6 @@ export default function Workout() {
 
 	const createNewWorkout = async () => {};
 
->>>>>>> db2472ae4ab34007fdb9462280ec35bae51e0c0b
 	return (
 		<div className="menuContainer">
 			{selectedWorkout && (
