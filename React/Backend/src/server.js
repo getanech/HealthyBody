@@ -1,13 +1,11 @@
 const express = require("express");
 const app = express();
 
-const bodyparser = require("body-parser");
+const bodyParser = require("body-parser");
 const { connectToServer } = require("./databse/dbConnection");
-const dotenv = require("dotenv");
+require("dotenv").config();
 
-app.use(bodyparser.json());
-
-dotenv.config();
+app.use(bodyParser.json());
 
 const port = process.env.PORT || 6666;
 
@@ -20,6 +18,7 @@ const workoutRouter = require("./router/workoutsRouter");
 app.use(cors());
 app.use("/users", userRoute);
 app.use("/workouts", workoutRouter);
+app.use(express.urlencoded({ extended: false }));
 
 app.listen(port, () =>
 	console.log(`[SERVER]\t\tServer is running on port: ${port}!`)

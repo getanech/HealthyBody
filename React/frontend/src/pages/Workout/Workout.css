@@ -48,3 +48,16 @@
 			0 0 80px rgba(255, 255, 255, 0.1);
 	}
 }
+
+.myWorkoutsWrapper {
+	width: 100%;
+}
+
+.myWorkoutsList {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+}

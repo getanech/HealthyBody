@@ -1,4 +1,5 @@
 import axios from "axios";
+import parameters from "./config";
 
 const userRequests = {
 	register: async (data) => {
@@ -28,6 +29,32 @@ const userRequests = {
 			{
 				params: {
 					userId: userId,
+				},
+			}
+		);
+		return response;
+	},
+	/**
+	 * Retrieves the workouts associated with a specific user.
+	 *
+	 * @param {string} userId - The ID of the user.
+	 * @return {Promise<Object>} A promise that resolves to the response containing the user's workouts.
+	 */
+	getUserWorkouts: async (userId) => {
+		console.log("userId", userId);
+		const url = `${parameters.baseUrl}/users/workouts`;
+		console.log("url", url);
+		const response = await axios.get(url, { params: { userId } });
+		return response;
+	},
+
+	removeUserWorkout: async (userId, workoutId) => {
+		const response = await axios.delete(
+			parameters.baseUrl + "/users" + "/workouts",
+			{
+				params: {
+					userId: userId,
+					workoutId: workoutId,
 				},
 			}
 		);

@@ -46,9 +46,29 @@ const userSchema = new Schema({
 	},
 	workouts: [
 		{
-			type: Schema.Types.ObjectId,
-			ref: "Workout",
-			default: [],
+			name: {
+				type: String,
+				required: true,
+			},
+			exercises: [
+				{
+					exercise: {
+						type: Schema.Types.ObjectId,
+						ref: "exercise",
+					},
+					reps: Number,
+				},
+			],
+			dates: [
+				{
+					type: Date,
+					required: true,
+				},
+			],
+			active: {
+				type: Boolean,
+				default: true,
+			},
 		},
 	],
 });

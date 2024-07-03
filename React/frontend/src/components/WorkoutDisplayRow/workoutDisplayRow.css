@@ -1,0 +1,10 @@
+.workoutDisplayRow {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	background-color: rgba(255, 255, 255, 0.2);
+	border-radius: 15px;
+	padding: 1rem;
+	box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0.5);
+	width: 100%;
+	/* flex-grow: 1; */
+}

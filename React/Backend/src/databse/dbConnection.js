@@ -11,10 +11,7 @@ const defaultWorkouts = require("../mockData/WorkoutData");
 const uri = "1234";
 const connectToServer = async () => {
 	try {
-		await mongoose.connect(process.env.MONGODB_URI || uri, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		});
+		await mongoose.connect(process.env.MONGODB_URI || uri, {});
 		console.log("[DATABASE]\t\tDATABASE CONNECTED");
 		console.log("[DATABASE]\t\tMODELS:");
 		for (let name in mongoose.connection.collections) {

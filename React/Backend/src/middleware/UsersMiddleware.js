@@ -43,6 +43,23 @@ const UsersMiddleware = {
 			.status(response.status)
 			.json({ message: response.message, data: response.data });
 	},
+
+	getUserWorkouts: async (req, res, next) => {
+		console.log("req", req.query);
+
+		const response = await userServices.getUserWorkouts(req, res, next);
+
+		return res
+			.status(response.status)
+			.json({ message: response.message, data: response.data });
+	},
+
+	removeUserWorkout: async (req, res, next) => {
+		const response = await userServices.removeUserWorkout(req, res, next);
+		return res
+			.status(response.status)
+			.json({ message: response.message, data: response.data });
+	},
 };
 
 module.exports = UsersMiddleware;
