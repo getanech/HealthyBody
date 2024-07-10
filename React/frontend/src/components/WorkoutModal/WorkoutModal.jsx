@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Workout.css";
 
 export default function WorkoutModal({ workout, close, addToMyWorkouts }) {
@@ -24,17 +24,21 @@ export default function WorkoutModal({ workout, close, addToMyWorkouts }) {
 		setWeekDaySelected(newWeekDaySelected);
 	};
 
+	useEffect(() => {
+		gatherSelectedDates();
+	}, [weekDaySelected]);
+
 	const renderWorkoutEventPanel = () => {
 		return (
 			<div className="workoutEventPanel">
 				<div className="dateInputsContainer">
 					<div className="dateInput">
 						<h3>Begin Date:</h3>
-						<input ref={beginRef} type="date" />
+						<input onChange={gatherSelectedDates} ref={beginRef} type="date" />
 					</div>
 					<div className="dateInput">
 						<h3>End Date:</h3>
-						<input ref={endRef} type="date" />
+						<input onChange={gatherSelectedDates} ref={endRef} type="date" />
 					</div>
 				</div>
 				<div className="weekDaysContainer">
@@ -122,6 +126,11 @@ export default function WorkoutModal({ workout, close, addToMyWorkouts }) {
 		);
 	};
 
+	const handleSubmit = async () => {
+		await addToMyWorkouts(workoutData);
+		close();
+	};
+
 	return (
 		<div className="WorkoutModal">
 			<div className="WorkoutPanel">
@@ -134,9 +143,7 @@ export default function WorkoutModal({ workout, close, addToMyWorkouts }) {
 				</div>
 				{renderWorkoutEventPanel()}
 				<div className="buttonPanel">
-					<button onClick={() => addToMyWorkouts(workoutData)}>
-						Add to my workouts
-					</button>
+					<button onClick={handleSubmit}>Add to my workouts</button>
 
 					<button onClick={close}>Close</button>
 				</div>

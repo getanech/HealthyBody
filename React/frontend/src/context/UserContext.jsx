@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import userRequests from "../api/userRequests";
 
 export const UserContext = createContext(null);
 
@@ -9,7 +10,14 @@ export const UserProvider = ({ children }) => {
 		JSON.parse(localStorage.getItem("user")) || null
 	);
 
+	const refreshUserInfoFromServer = async () => {
+		const response = await userRequests.getUserInfo(user._id);
+		const data = response.data.data;
+		setUser(data);
+	};
+
 	useEffect(() => {
+		console.log("user", user);
 		if (user) localStorage.setItem("user", JSON.stringify(user));
 		else localStorage.removeItem("user");
 	}, [user]);
@@ -26,7 +34,9 @@ export const UserProvider = ({ children }) => {
 	};
 
 	return (
-		<UserContext.Provider value={{ user, updateUser, removeUser }}>
+		<UserContext.Provider
+			value={{ user, updateUser, removeUser, refreshUserInfoFromServer }}
+		>
 			{children}
 		</UserContext.Provider>
 	);

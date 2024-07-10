@@ -2,6 +2,13 @@ const userServices = require("../services/UserServices");
 const tokenUtil = require("../utils/tokenUtil");
 
 const UsersMiddleware = {
+	getUser: async (req, res, next) => {
+		const response = await userServices.getUser(req, res, next);
+		return res
+			.status(response.status)
+			.json({ message: response.message, data: response.data });
+	},
+
 	register: async (req, res, next) => {
 		const response = await userServices.register(req, res, next);
 		return res.status(200).json({ response: response });
@@ -9,7 +16,6 @@ const UsersMiddleware = {
 
 	login: async (req, res, next) => {
 		const response = await userServices.login(req, res, next);
-		console.log("response", response);
 		if (response.success) {
 			const token = tokenUtil.generateToken(response.data);
 			response.data.toJ;

@@ -2,9 +2,7 @@ const User = require("../models/UserModel.js");
 const userServices = {
 	register: async (req, res) => {
 		const user = new User(req.body);
-		const response = await user.save();
-		console.log("response", response);
-		return user;
+		return await user.save();
 	},
 
 	login: async (req, res) => {
@@ -12,19 +10,12 @@ const userServices = {
 
 		const user = await User.findOne({ email });
 
-		if (!user) {
+		if (!user || user.password !== password) {
 			return {
 				success: false,
-				message: "User with this email does not exist",
-				status: 400,
-				data: null,
-			};
-		}
-
-		if (user.password !== password) {
-			return {
-				success: false,
-				message: "Incorrect password",
+				message: !user
+					? "User with this email does not exist"
+					: "Incorrect password",
 				status: 400,
 				data: null,
 			};
@@ -38,15 +29,54 @@ const userServices = {
 		};
 	},
 
+	getUser: async (req, res) => {
+		try {
+			// const user = await User.findById(req.query.userId);
+			const user = await User.findById(req.query.userId).populate(
+				"workouts.exercises.exercise"
+			);
+			if (!user) {
+				return {
+					success: false,
+					message: "User not found",
+					status: 404,
+					data: null,
+				};
+			}
+
+			return {
+				success: true,
+				message: "User retrieved successfully",
+				status: 200,
+				data: user,
+			};
+		} catch (error) {
+			console.log("error", error);
+			return {
+				success: false,
+				message: "Error retrieving user",
+				status: 500,
+				data: null,
+			};
+		}
+	},
+
 	addWorkout: async (req, res) => {
 		try {
-			const user = await User.findById(req.query.userId);
+			const user = await User.findByIdAndUpdate(
+				req.query.userId,
+				{ $push: { workouts: req.body.workout } },
+				{ new: true }
+			);
 
-			if (!user.workouts) user.workouts = [];
-			await user.save();
-
-			user.workouts.push(req.body.workout);
-			await user.save();
+			if (!user) {
+				return {
+					success: false,
+					message: "User not found",
+					status: 404,
+					data: null,
+				};
+			}
 
 			return {
 				success: true,
@@ -67,7 +97,7 @@ const userServices = {
 
 	getUserWorkouts: async (req, res) => {
 		try {
-			const user = await User.findById(req.query.userId);
+			const user = await User.findById(req.query.userId, { workouts: 1 });
 			if (!user) {
 				return {
 					success: false,
@@ -96,7 +126,12 @@ const userServices = {
 
 	removeUserWorkout: async (req, res) => {
 		try {
-			const user = await User.findById(req.query.userId);
+			const user = await User.findByIdAndUpdate(
+				req.query.userId,
+				{ $pull: { workouts: { _id: req.query.workoutId } } },
+				{ new: true }
+			);
+
 			if (!user) {
 				return {
 					success: false,
@@ -105,14 +140,7 @@ const userServices = {
 					data: null,
 				};
 			}
-			const { workoutId } = req.query;
-			console.log("workoutId", workoutId);
-			console.log("user.workouts", user.workouts);
-			user.workouts = user.workouts.filter((workout) => {
-				// console.log("workout", workout);
-				return workout.toString() !== workoutId;
-			});
-			await user.save();
+
 			return {
 				success: true,
 				message: "Workout removed successfully",

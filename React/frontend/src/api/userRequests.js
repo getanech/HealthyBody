@@ -2,6 +2,14 @@ import axios from "axios";
 import parameters from "./config";
 
 const userRequests = {
+	getUserInfo: async (userId) => {
+		const response = await axios.get(parameters.baseUrl + "/users", {
+			params: {
+				userId: userId,
+			},
+		});
+		return response;
+	},
 	register: async (data) => {
 		const response = await axios.post("http://localhost:5000/users", data);
 		return response;

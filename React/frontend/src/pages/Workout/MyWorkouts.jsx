@@ -4,12 +4,12 @@ import userRequests from "../../api/userRequests";
 import WorkoutDisplayRow from "../../components/WorkoutDisplayRow";
 
 export default function MyWorkouts() {
-	const { user } = useContext(UserContext);
+	const { user, refreshUserInfoFromServer } = useContext(UserContext);
 	const [myWorkouts, setMyWorkouts] = useState([]);
 
 	const removeUserWorkout = async (workoutId) => {
 		const response = await userRequests.removeUserWorkout(user._id, workoutId);
-
+		await refreshUserInfoFromServer();
 		await refreshUserWorkouts();
 	};
 

@@ -14,6 +14,20 @@
 	/* gap: 0.25rem; */
 }
 
+.workoutExercises {
+	border: 1px solid white;
+	padding: 2rem;
+	border-radius: 15px;
+}
+
+.workoutExerciseTable {
+	display: grid;
+	grid-template-columns: 1.5fr 2fr 1fr 1fr;
+	gap: 1rem;
+	row-gap: 2rem;
+	text-align: center;
+}
+
 .workoutTable {
 	text-align: center;
 	flex-grow: 1;

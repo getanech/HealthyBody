@@ -3,6 +3,8 @@ const usersData = require("../mockData/UserData");
 const UsersMiddleware = require("../middleware/UsersMiddleware");
 const userRoute = express.Router();
 
+userRoute.get("/", UsersMiddleware.getUser);
+
 userRoute.post("/", UsersMiddleware.register);
 userRoute.post("/login", UsersMiddleware.login);
 userRoute.post("/", (req, res) => {

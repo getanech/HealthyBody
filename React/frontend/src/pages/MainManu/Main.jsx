@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Main.css";
 import DayView from "./DayView";
 import DayPicker from "./DayPicker";
@@ -9,13 +9,10 @@ import { useNavigate } from "react-router-dom";
 export default function Main() {
 	const navigate = useNavigate();
 	const { user } = useContext(UserContext);
-	console.log("user", user);
-	const [selectedDate, setSelectedDate] = React.useState(new Date());
+	const [selectedDate, setSelectedDate] = useState(new Date());
 
 	useEffect(() => {
-		if (!user) {
-			navigate("/");
-		}
+		if (!user) navigate("/");
 	}, []);
 
 	return (

@@ -6,7 +6,7 @@ import userRequests from "../../api/userRequests";
 import WorkoutModal from "../../components/WorkoutModal/WorkoutModal";
 
 export default function ExploreWorkouts() {
-	const { user } = useContext(UserContext);
+	const { user, refreshUserInfoFromServer } = useContext(UserContext);
 	const [workoutData, setWorkoutData] = useState([]);
 	const [selectedWorkout, setSelectedWorkout] = useState(null);
 
@@ -40,8 +40,8 @@ export default function ExploreWorkouts() {
 	const addWorkoutToMyWorkouts = async (workout) => {
 		try {
 			const res = await userRequests.addUserWorkout(user._id, workout);
-			console.log("res", res);
-			// refreshWorkoutData();
+			await refreshUserInfoFromServer();
+			refreshWorkoutData();
 		} catch (error) {
 			console.error(error);
 		}
