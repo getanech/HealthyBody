@@ -1,3 +1,3 @@
 import WorkoutModal from "./WorkoutModal";
 
-export default WorkoutModal
+export default WorkoutModal;

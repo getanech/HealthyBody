@@ -8,13 +8,13 @@ export default function DayView({ date }) {
 	const { user } = useContext(UserContext);
 	const [workoutData, setWorkoutData] = useState(null);
 	useEffect(() => {
-		console.log("date", date);
 		fetchData();
 	}, [date]);
 
 	const fetchData = () => {
 		const dayWorkouts = [];
 		for (const workout of user.workouts) {
+			console.log("workout", workout);
 			for (const workoutDate of workout.dates) {
 				if (
 					new Date(date).toDateString() == new Date(workoutDate).toDateString()
@@ -24,7 +24,7 @@ export default function DayView({ date }) {
 			}
 		}
 		// console.log("dayWorkouts", dayWorkouts);
-		setWorkoutData(dayWorkouts[0] || null);
+		setWorkoutData(dayWorkouts || null);
 		// setWorkoutData(user.workouts[0]);
 
 		// const workouts = mockData.users[0].workouts;
@@ -42,7 +42,7 @@ export default function DayView({ date }) {
 	};
 
 	const showWorkoutData = () => {
-		if (!workoutData) {
+		if (!workoutData || workoutData.length == 0) {
 			return (
 				<div className="workoutDataContainer">
 					<p>אין אימונים בתאריך זה</p>
@@ -50,25 +50,33 @@ export default function DayView({ date }) {
 			);
 		}
 
+		console.log("workoutData", workoutData);
+
 		return (
 			<div className="workoutDataContainer">
-				<div className="workoutName">{workoutData.name}</div>
-				<div className="workoutExercises">
-					<div className="workoutExerciseTable">
-						<label>תרגיל</label>
-						<label>קבוצות שררים</label>
-						<label>חזרות</label>
-						<label>משקל עבודה</label>
-					</div>
-					{workoutData.exercises.map((exercise, index) => (
-						<div key={index} className="workoutExerciseTable">
-							<label>{exercise.exercise.name}</label>
-							<label>{exercise.exercise.muscleGroups.join(", ")}</label>
-							<label>{exercise.reps}</label>
-							<label>{exercise.weight ? exercise.weight : "-"}</label>
+				{workoutData.map((workout, index) => {
+					return (
+						<div key={index}>
+							<div className="workoutName">{workout.name}</div>
+							<div className="workoutExercises">
+								<div className="workoutExerciseTable">
+									<label>תרגיל</label>
+									<label>קבוצות שררים</label>
+									<label>חזרות</label>
+									<label>משקל עבודה</label>
+								</div>
+								{workout.exercises.map((exercise, index) => (
+									<div key={index} className="workoutExerciseTable">
+										<label>{exercise.exercise.name}</label>
+										<label>{exercise.exercise.muscleGroups.join(", ")}</label>
+										<label>{exercise.reps}</label>
+										<label>{exercise.weight ? exercise.weight : "-"}</label>
+									</div>
+								))}
+							</div>
 						</div>
-					))}
-				</div>
+					);
+				})}
 			</div>
 		);
 	};

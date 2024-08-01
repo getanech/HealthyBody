@@ -1,8 +1,10 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import "./dayPicker.css";
 import mockData from "../../../mockData";
+import UserContext from "../../../context/UserContext";
 
 export default function DayPicker({ selectedDate, setDate }) {
+	const { user } = useContext(UserContext);
 	const weekDayNames = ["א", "ב", "ג", "ד", "ה", "ו", "ש"];
 
 	const showFullWeek = () => {
@@ -20,7 +22,7 @@ export default function DayPicker({ selectedDate, setDate }) {
 		}
 
 		return (
-			<div className="weekDaysContainer">
+			<div className="weekView">
 				{dateArr.map((date, index) => {
 					const dateObj = new Date(date);
 					const dayName = weekDayNames[dateObj.getDay()];
@@ -92,7 +94,6 @@ export default function DayPicker({ selectedDate, setDate }) {
 						let classes = "calendarCell";
 						if (isWorkoutDay(date)) {
 							classes += " workoutDay";
-							console.log("classes", classes);
 						}
 						return (
 							<div
@@ -110,15 +111,11 @@ export default function DayPicker({ selectedDate, setDate }) {
 	};
 
 	const isWorkoutDay = (date) => {
-		const dateObj = new Date(date).toLocaleDateString("he-IL").toString();
-		for (let i = 0; i < mockData.users.length; i++) {
-			const user = mockData.users[i];
-			if (user.id === 1) {
-				for (let j = 0; j < user.workouts.length; j++) {
-					const workout = user.workouts[j];
-					if (workout.date == dateObj) {
-						return true;
-					}
+		const dateObj = new Date(date);
+		for (let workout of user.workouts) {
+			for (let workoutDate of workout.dates) {
+				if (dateObj.toDateString() == new Date(workoutDate).toDateString()) {
+					return true;
 				}
 			}
 		}
@@ -129,7 +126,7 @@ export default function DayPicker({ selectedDate, setDate }) {
 		<div className="dayPickerContainer">
 			{showFullWeek()}
 			<input
-				defaultValue={selectedDate}
+				defaultValue={selectedDate.toISOString().substring(0, 10)}
 				type="date"
 				className="dateInput"
 				onChange={(e) => setDate(new Date(e.target.value))}

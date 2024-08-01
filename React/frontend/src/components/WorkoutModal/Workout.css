@@ -21,13 +21,19 @@
 	height: 100svh;
 	background-color: rgba(235, 235, 235, 0.7);
 }
-.h1 {
+
+h1 {
+	all: unset;
+}
+
+.headline {
 	color: white;
+	font-size: 3rem;
 }
 
 .exerciseInfoGrid {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	color: white;
 	gap: 1rem;
 }
@@ -85,4 +91,25 @@
 	place-items: center;
 	gap: 1rem;
 	justify-content: space-around;
+}
+
+.exerciseRepContainer {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	place-items: center;
+}
+
+.exerciseInfoContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.deleteBtn {
+	width: 5rem;
+}
+
+.workoutHeadlineActions {
+	display: flex;
+	gap: 1rem;
 }

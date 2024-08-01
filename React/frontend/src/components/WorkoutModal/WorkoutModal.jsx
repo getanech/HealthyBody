@@ -1,9 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Workout.css";
+import NewExerciseRow from "../NewExerciseRow";
 
-export default function WorkoutModal({ workout, close, addToMyWorkouts }) {
+export default function WorkoutModal({
+	workout,
+	close,
+	addToMyWorkouts,
+}) {
 	const [editMode, setEditMode] = useState(false);
 	const [workoutData, setWorkoutData] = useState(workout);
+	const [defaultExercises, setDefaultExercises] = useState([
+		...workout.exercises,
+	]);
+
+	const [allExerciseData, setAllExerciseData] = useState([]);
+
+	const getAllExercises = async () => {
+	}
+
+	useEffect(() => {
+		getAllExercises();
+	}, []);
 
 	const beginRef = useRef(null);
 	const endRef = useRef(null);
@@ -18,15 +35,21 @@ export default function WorkoutModal({ workout, close, addToMyWorkouts }) {
 		false,
 	]);
 
+	const [headline, setHeadline] = useState(workout.name);
+
+	// useEffect(() => {
+	// 	console.log("workoutData", workoutData.exercises);
+	// }, [workoutData]);
+
 	const toggleWeekDaySelected = (index) => {
 		const newWeekDaySelected = [...weekDaySelected];
 		newWeekDaySelected[index] = !newWeekDaySelected[index];
 		setWeekDaySelected(newWeekDaySelected);
 	};
 
-	useEffect(() => {
-		gatherSelectedDates();
-	}, [weekDaySelected]);
+	// useEffect(() => {
+	// 	gatherSelectedDates();
+	// }, [weekDaySelected]);
 
 	const renderWorkoutEventPanel = () => {
 		return (
@@ -113,12 +136,41 @@ export default function WorkoutModal({ workout, close, addToMyWorkouts }) {
 	const showExerciseInfo = () => {
 		return (
 			<div className="exerciseInfoContainer">
+				{editMode && <NewExerciseRow />}
 				{workoutData.exercises.map((exObject, index) => {
 					return (
 						<div className="exerciseInfoGrid" key={index}>
 							<p>{exObject.exercise.name}</p>
-							<p>{exObject.reps}</p>
+							<div className="exerciseRepContainer">
+								{editMode && (
+									<button
+										onClick={() =>
+											changeExerciseReps(exObject, exObject.reps - 1)
+										}
+									>
+										-
+									</button>
+								)}
+								<p>{exObject.reps}</p>
+								{editMode && (
+									<button
+										onClick={() =>
+											changeExerciseReps(exObject, exObject.reps + 1)
+										}
+									>
+										+
+									</button>
+								)}
+							</div>
 							<p>{exObject.exercise.muscleGroups.join(", ")}</p>
+							{editMode && (
+								<button
+									className="deleteBtn"
+									onClick={() => deleteExercise(index)}
+								>
+									✖️
+								</button>
+							)}
 						</div>
 					);
 				})}
@@ -126,9 +178,49 @@ export default function WorkoutModal({ workout, close, addToMyWorkouts }) {
 		);
 	};
 
+	const changeExerciseReps = (exObject, reps) => {
+		const newExercises = [...workoutData.exercises];
+		newExercises[newExercises.indexOf(exObject)].reps = reps;
+
+		setWorkoutData({
+			...workoutData,
+			exercises: newExercises,
+		});
+	};
+
+	const deleteExercise = (index) => {
+		const newExercises = [...workoutData.exercises];
+		newExercises.splice(index, 1);
+		setWorkoutData({
+			...workoutData,
+			exercises: newExercises,
+		});
+	};
+
 	const handleSubmit = async () => {
 		await addToMyWorkouts(workoutData);
 		close();
+	};
+
+	const renderHeadline = () => {
+		if (editMode) {
+			return (
+				<input
+					type="text"
+					className="headline"
+					// defaultValue={headline}
+					value={headline}
+					onChange={(e) => setHeadline(e.target.value)}
+				/>
+			);
+		}
+
+		return <h1 className="headline">{headline}</h1>;
+	};
+
+	const resetWorkoutData = () => {
+		setWorkoutData({ workout, exercises: defaultExercises });
+		setHeadline(workout.name);
 	};
 
 	return (
@@ -136,15 +228,17 @@ export default function WorkoutModal({ workout, close, addToMyWorkouts }) {
 			<div className="WorkoutPanel">
 				<div className="workoutInfo">
 					<div className="workoutHeader">
-						<h1 className="h1">{workoutData.name}</h1>
-						<button onClick={() => setEditMode(!editMode)}>Edit</button>
+						{renderHeadline()}
+						<div className="workoutHeadlineActions">
+							<button onClick={() => setEditMode(!editMode)}>Edit</button>
+							<button onClick={resetWorkoutData}>Reset</button>
+						</div>
 					</div>
 					{showExerciseInfo()}
 				</div>
 				{renderWorkoutEventPanel()}
 				<div className="buttonPanel">
 					<button onClick={handleSubmit}>Add to my workouts</button>
-
 					<button onClick={close}>Close</button>
 				</div>
 			</div>

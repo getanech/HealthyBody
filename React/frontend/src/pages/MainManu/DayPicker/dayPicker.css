@@ -14,8 +14,7 @@
 	border-radius: 30px;
 }
 
-.weekDaysContainer {
-	width: 100%;
+.weekView {
 	height: fit-content;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
