@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const UserModel = require("../models/UserModel");
-const ExcerciseModel = require("../models/ExcerciseModel");
+const ExerciseModel = require("../models/ExerciseModel");
 const WorkoutModel = require("../models/WorkoutModel");
 
 const defaultExercise = require("../mockData/ExerciseData");
-const exerciseService = require("../services/ExcerciseService");
+const exerciseService = require("../services/ExerciseService");
 const WorkoutService = require("../services/WorkoutService");
 const defaultWorkouts = require("../mockData/WorkoutData");
 

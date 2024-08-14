@@ -66,6 +66,13 @@ const UsersMiddleware = {
 			.status(response.status)
 			.json({ message: response.message, data: response.data });
 	},
+
+	updateUser: async (req, res, next) => {
+		const response = await userServices.updateUser(req, res, next);
+		return res
+			.status(response.status)
+			.json({ message: response.message, data: response.data });
+	},
 };
 
 module.exports = UsersMiddleware;

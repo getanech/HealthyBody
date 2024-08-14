@@ -14,10 +14,12 @@ connectToServer();
 const cors = require("cors");
 const userRoute = require("./router/userRoute");
 const workoutRouter = require("./router/workoutsRouter");
+const exerciseRouter = require("./router/exerciseRouter");
 
 app.use(cors());
 app.use("/users", userRoute);
 app.use("/workouts", workoutRouter);
+app.use("/exercises", exerciseRouter);
 app.use(express.urlencoded({ extended: false }));
 
 app.listen(port, () =>

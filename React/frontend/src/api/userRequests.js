@@ -68,5 +68,14 @@ const userRequests = {
 		);
 		return response;
 	},
+
+	updateUser: async (user) => {
+		const response = await axios.put(parameters.baseUrl + "/users", user, {
+			params: {
+				userId: user._id,
+			},
+		});
+		return response;
+	},
 };
 export default userRequests;
