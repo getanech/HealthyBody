@@ -11,6 +11,8 @@ userRoute.post("/", (req, res) => {
 	return res.status(200).json({ response: "123456" });
 });
 
+userRoute.put("/", UsersMiddleware.updateUser);
+
 userRoute.post("/workouts", UsersMiddleware.addUserWorkout);
 
 userRoute.get("/workouts", UsersMiddleware.getUserWorkouts);

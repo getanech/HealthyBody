@@ -3,18 +3,49 @@ import "./dayView.css";
 import mockData from "../../../mockData";
 import { json } from "react-router-dom";
 import UserContext from "../../../context/UserContext";
+import WorkoutDayViewItem from "../../../components/WorkoutDayViewItem";
+import userRequests from "../../../api/userRequests";
+import Modal from "../../../components/Modal/Modal";
 
 export default function DayView({ date }) {
-	const { user } = useContext(UserContext);
+	const { user, updateUser } = useContext(UserContext);
 	const [workoutData, setWorkoutData] = useState(null);
+	const [popUpContent, setPopUpContent] = useState(<></>);
+
 	useEffect(() => {
 		fetchData();
 	}, [date]);
 
+	const submitUpdate = async () => {
+		const newWorkouts = [];
+		for (const workout of user.workouts) {
+			const matchingWorkout = workoutData.find((w) => w._id == workout._id);
+			if (matchingWorkout) {
+				newWorkouts.push({ ...workout, ...matchingWorkout });
+			} else {
+				newWorkouts.push(workout);
+			}
+		}
+
+		user.workouts = newWorkouts;
+		console.log("[USER BEFORE UPDATE REQ]", user);
+
+		const res = await userRequests.updateUser(user);
+		if (res.status == 200) {
+			// console.log("res.data.data", res.data.data);
+			updateUser(res.data.data);
+			setPopUpContent(
+				<Modal
+					message="המשתמש עודכן בהצלחה"
+					close={() => setPopUpContent(<></>)}
+				/>
+			);
+		}
+	};
+
 	const fetchData = () => {
 		const dayWorkouts = [];
 		for (const workout of user.workouts) {
-			console.log("workout", workout);
 			for (const workoutDate of workout.dates) {
 				if (
 					new Date(date).toDateString() == new Date(workoutDate).toDateString()
@@ -23,22 +54,7 @@ export default function DayView({ date }) {
 				}
 			}
 		}
-		// console.log("dayWorkouts", dayWorkouts);
 		setWorkoutData(dayWorkouts || null);
-		// setWorkoutData(user.workouts[0]);
-
-		// const workouts = mockData.users[0].workouts;
-		// for (let i = 0; i < workouts.length; i++) {
-		// 	console.log(
-		// 		'workouts[i].date == date.toLocaleDateString("he-IL")',
-		// 		workouts[i].date == date.toLocaleDateString("he-IL")
-		// 	);
-		// 	if (workouts[i].date == date.toLocaleDateString("he-IL")) {
-		// 		setWorkoutData(workouts[i]);
-		// 		return;
-		// 	}
-		// }
-		// setWorkoutData(null);
 	};
 
 	const showWorkoutData = () => {
@@ -50,31 +66,17 @@ export default function DayView({ date }) {
 			);
 		}
 
-		console.log("workoutData", workoutData);
-
 		return (
 			<div className="workoutDataContainer">
 				{workoutData.map((workout, index) => {
 					return (
-						<div key={index}>
-							<div className="workoutName">{workout.name}</div>
-							<div className="workoutExercises">
-								<div className="workoutExerciseTable">
-									<label>תרגיל</label>
-									<label>קבוצות שררים</label>
-									<label>חזרות</label>
-									<label>משקל עבודה</label>
-								</div>
-								{workout.exercises.map((exercise, index) => (
-									<div key={index} className="workoutExerciseTable">
-										<label>{exercise.exercise.name}</label>
-										<label>{exercise.exercise.muscleGroups.join(", ")}</label>
-										<label>{exercise.reps}</label>
-										<label>{exercise.weight ? exercise.weight : "-"}</label>
-									</div>
-								))}
-							</div>
-						</div>
+						<WorkoutDayViewItem
+							key={index}
+							workout={workout}
+							setWorkoutData={setWorkoutData}
+							workoutData={workoutData}
+							submitUpdate={submitUpdate}
+						/>
 					);
 				})}
 			</div>
@@ -83,6 +85,7 @@ export default function DayView({ date }) {
 
 	return (
 		<div className="dayViewContainer">
+			{popUpContent}
 			<h4>האימון הקרוב: {date.toLocaleDateString("he-IL")}</h4>
 			{showWorkoutData()}
 		</div>

@@ -157,6 +157,48 @@ const userServices = {
 			};
 		}
 	},
+
+	updateUser: async (req, res) => {
+		try {
+			const user = await User.findByIdAndUpdate(req.query.userId, {
+				$set: req.body,
+			}).populate("workouts.exercises.exercise");
+
+			req.body.workouts.map((workout, index) => {
+				user.workouts[index].exercises.map((exercise, exIndex) => {
+					exercise.reps = req.body.workouts[index].exercises[exIndex].reps;
+					if (workout.exercises[exIndex].exercise.weight) {
+						user.workouts[index].exercises[exIndex].exercise.weight =
+							workout.exercises[exIndex].exercise.weight;
+					}
+				});
+			});
+			await user.save();
+
+			if (!user) {
+				return {
+					success: false,
+					message: "User not found",
+					status: 404,
+					data: null,
+				};
+			}
+			return {
+				success: true,
+				message: "User updated successfully",
+				status: 200,
+				data: user,
+			};
+		} catch (error) {
+			console.log("error", error);
+			return {
+				success: false,
+				message: "Error updating user",
+				status: 500,
+				data: null,
+			};
+		}
+	},
 };
 
 module.exports = userServices;

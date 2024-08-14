@@ -4,7 +4,7 @@ const WorkoutService = {
 	createWorkout: async (data) => {
 		const workout = new Workout(data);
 		const response = await workout.save();
-		console.log("response", response);
+
 		return workout;
 	},
 

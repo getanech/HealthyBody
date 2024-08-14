@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Workout.css";
 import NewExerciseRow from "../NewExerciseRow";
+import exerciseRequests from "../../api/exerciseRequests";
 
-export default function WorkoutModal({
-	workout,
-	close,
-	addToMyWorkouts,
-}) {
+export default function WorkoutModal({ workout, close, addToMyWorkouts }) {
 	const [editMode, setEditMode] = useState(false);
 	const [workoutData, setWorkoutData] = useState(workout);
 	const [defaultExercises, setDefaultExercises] = useState([
@@ -16,11 +13,22 @@ export default function WorkoutModal({
 	const [allExerciseData, setAllExerciseData] = useState([]);
 
 	const getAllExercises = async () => {
-	}
+		const response = await exerciseRequests.getExercises();
+		setAllExerciseData(response.data.data);
+	};
 
 	useEffect(() => {
 		getAllExercises();
 	}, []);
+
+	const submitExercise = (exercise, reps) => {
+		const newExercises = [...workoutData.exercises, { exercise, reps }];
+		setWorkoutData({
+			...workoutData,
+			exercises: newExercises,
+		});
+		setEditMode(false);
+	};
 
 	const beginRef = useRef(null);
 	const endRef = useRef(null);
@@ -136,7 +144,12 @@ export default function WorkoutModal({
 	const showExerciseInfo = () => {
 		return (
 			<div className="exerciseInfoContainer">
-				{editMode && <NewExerciseRow />}
+				{editMode && (
+					<NewExerciseRow
+						exerciseData={allExerciseData}
+						submitExercise={submitExercise}
+					/>
+				)}
 				{workoutData.exercises.map((exObject, index) => {
 					return (
 						<div className="exerciseInfoGrid" key={index}>

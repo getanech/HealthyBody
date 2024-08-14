@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function NewExerciseRow(exerciseData) {
+export default function NewExerciseRow({ exerciseData, submitExercise }) {
 	const [customNameMode, setCustomNameMode] = useState(false);
 	const [reps, setReps] = useState(10);
 
@@ -13,11 +13,14 @@ export default function NewExerciseRow(exerciseData) {
 		} else {
 			return (
 				<select style={inputStyle}>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
+					{exerciseData.map((exercise) => (
+						<option
+							key={exercise._id}
+							onClick={() => setSelectedExercise(exercise)}
+						>
+							{exercise.name}
+						</option>
+					))}
 				</select>
 			);
 		}
@@ -38,7 +41,8 @@ export default function NewExerciseRow(exerciseData) {
 			return <input />;
 		}
 
-		return <p>description</p>;
+		const temp = selectedExercise.muscleGroups.join(", ");
+		return <p>{temp}</p>;
 	};
 
 	const rowStyle = {
@@ -47,12 +51,18 @@ export default function NewExerciseRow(exerciseData) {
 		gap: "1rem",
 	};
 
+	const handleSubmit = () => {
+		submitExercise(selectedExercise, reps);
+	};
+
 	return (
 		<div style={rowStyle}>
 			{renderSelection()}
 			{renderReps()}
 			{renderDescription()}
-			<button style={{ width: "5rem" }}>➕</button>
+			<button onClick={handleSubmit} style={{ width: "5rem" }}>
+				➕
+			</button>
 		</div>
 	);
 }
