@@ -12,6 +12,7 @@ export default function DayView({ date }) {
 	}, [date]);
 
 	const fetchData = () => {
+		 return [];
 		const dayWorkouts = [];
 		for (const workout of user.workouts) {
 			console.log("workout", workout);

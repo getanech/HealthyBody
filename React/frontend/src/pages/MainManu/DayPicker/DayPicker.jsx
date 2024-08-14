@@ -111,6 +111,7 @@ export default function DayPicker({ selectedDate, setDate }) {
 	};
 
 	const isWorkoutDay = (date) => {
+		// return false;
 		const dateObj = new Date(date);
 		for (let workout of user.workouts) {
 			for (let workoutDate of workout.dates) {
