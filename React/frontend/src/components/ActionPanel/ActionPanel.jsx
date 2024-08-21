@@ -11,7 +11,7 @@ export default function ActionPanel() {
 			<button>אימון חדש</button>
 			<button onClick={() => navigate("/workouts")}>My workout plan</button>
 			<button>1234</button>
-			<button>Action</button>
+			<button onClick={() => navigate("/profile")}>Profile</button>
 			<button>Action</button>
 			<button>Action</button>
 			<button>ביטול מנוי</button>

@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import { UserProvider } from "./context/UserContext";
 import Main from "./pages/MainManu";
 import Workout from "./pages/Workout/Workout";
+import Profile from "./pages/Profile";
 
 function App() {
 	return (
@@ -20,6 +21,7 @@ function App() {
 						<Route path="/" element={<Login />} />
 						<Route path="/register" element={<Register />} />
 						<Route path="/workouts" element={<Workout />} />
+						<Route path="/profile" element={<Profile />} />
 					</Routes>
 				</div>
 				<Footer />
