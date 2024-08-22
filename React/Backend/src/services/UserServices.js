@@ -164,6 +164,15 @@ const userServices = {
 				$set: req.body,
 			}).populate("workouts.exercises.exercise");
 
+			if (!user) {
+				return {
+					success: false,
+					message: "User not found",
+					status: 404,
+					data: null,
+				};
+			}
+
 			req.body.workouts.map((workout, index) => {
 				user.workouts[index].exercises.map((exercise, exIndex) => {
 					exercise.reps = req.body.workouts[index].exercises[exIndex].reps;
@@ -174,6 +183,29 @@ const userServices = {
 				});
 			});
 			await user.save();
+			const updatedUser = await User.findById(req.query.userId);
+			console.log("updatedUser", updatedUser);
+
+			return {
+				success: true,
+				message: "User updated successfully",
+				status: 200,
+				data: updatedUser,
+			};
+		} catch (error) {
+			console.log("error", error);
+			return {
+				success: false,
+				message: "Error updating user",
+				status: 500,
+				data: null,
+			};
+		}
+	},
+
+	validatePassword: async (userId, password) => {
+		try {
+			const user = await User.findById(userId);
 
 			if (!user) {
 				return {
@@ -183,17 +215,50 @@ const userServices = {
 					data: null,
 				};
 			}
+			// const isPasswordValid = await bcrypt.compare(password, user.password);
 			return {
 				success: true,
-				message: "User updated successfully",
+				message: "User validated successfully",
 				status: 200,
-				data: user,
+				data: user.password === password,
 			};
 		} catch (error) {
 			console.log("error", error);
 			return {
 				success: false,
-				message: "Error updating user",
+				message: "Error validating user",
+				status: 500,
+				data: null,
+			};
+		}
+	},
+
+	changePassword: async (userId, password) => {
+		try {
+			const user = await User.findById(userId);
+			if (!user) {
+				return {
+					success: false,
+					message: "User not found",
+					status: 404,
+					data: null,
+				};
+			}
+
+			user.password = password;
+			await user.save();
+
+			return {
+				success: true,
+				message: "Password changed successfully",
+				status: 200,
+				data: true,
+			};
+		} catch (error) {
+			console.log("error", error);
+			return {
+				success: false,
+				message: "Error changing password",
 				status: 500,
 				data: null,
 			};

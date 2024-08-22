@@ -73,6 +73,22 @@ const UsersMiddleware = {
 			.status(response.status)
 			.json({ message: response.message, data: response.data });
 	},
+
+	validatePassword: async (req, res, next) => {
+		const { userId, password } = req.query;
+		const response = await userServices.validatePassword(userId, password);
+		return res
+			.status(response.status)
+			.json({ message: response.message, data: response.data });
+	},
+
+	changePassword: async (req, res, next) => {
+		const { userId, password } = req.body;
+		const response = await userServices.changePassword(userId, password);
+		return res
+			.status(response.status)
+			.json({ message: response.message, data: response.data });
+	},
 };
 
 module.exports = UsersMiddleware;

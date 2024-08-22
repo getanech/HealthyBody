@@ -4,6 +4,14 @@ import { useState, useRef } from "react";
 import userRequests from "../../api/userRequests";
 
 export default function Register() {
+	const subscriptionEndDate = new Date(
+		new Date().getTime() + 6 * 30 * 24 * 60 * 60 * 1000
+	).toLocaleDateString("en-US", {
+		month: "long",
+		year: "numeric",
+		day: "numeric",
+	});
+
 	const useNavigate1 = useNavigate();
 	const firstNameRef = useRef(null);
 	const lastNameRef = useRef(null);
@@ -15,7 +23,33 @@ export default function Register() {
 	const emailRef = useRef(null);
 	const passwordRef = useRef(null);
 
+	const creditCardNumber = useRef(null);
+	const creditCardExp = useRef(null);
+	const creditCardCVV = useRef(null);
+	const creditCardName = useRef(null);
+
 	const [sex, setSex] = useState("");
+
+	const validateFields = () => {
+		if (
+			firstNameRef.current.value === "" ||
+			lastNameRef.current.value === "" ||
+			ageRef.current.value === "" ||
+			weightRef.current.value === "" ||
+			heightRef.current.value === "" ||
+			phoneRef.current.value === "" ||
+			sexRef.current.value === "" ||
+			emailRef.current.value === "" ||
+			passwordRef.current.value === "" ||
+			creditCardNumber.current.value === "" ||
+			creditCardExp.current.value === "" ||
+			creditCardCVV.current.value === "" ||
+			creditCardName.current.value === ""
+		) {
+			alert("Please fill all fields");
+			return false;
+		}
+	};
 
 	const handleRegister = async () => {
 		const data = {
@@ -28,6 +62,7 @@ export default function Register() {
 			sex: sexRef.current.value,
 			email: emailRef.current.value,
 			password: passwordRef.current.value,
+			subscriptionEnd: subscriptionEndDate,
 		};
 		const response = await userRequests.register(data);
 		if (response.status === 200) {
@@ -36,8 +71,6 @@ export default function Register() {
 		} else {
 			alert("Register failed.");
 		}
-
-		// useNavigate1("/login");
 	};
 
 	return (
@@ -90,6 +123,27 @@ export default function Register() {
 					<label>Password:</label>
 					<input ref={passwordRef} />
 				</div>
+				<h3>Payment</h3>
+				<div className="registerForm form">
+					<label>Credit Card Number:</label>
+					<input type="number" ref={creditCardNumber} />
+					<label>Expiration Date:</label>
+					<input type="date" ref={creditCardExp} />
+					<label>CVV:</label>
+					<input type="number" ref={creditCardCVV} />
+					<label>Cardholder's Name:</label>
+					<input type="text" ref={creditCardName} />
+				</div>
+				<h3>
+					Your subscription will be valid from{" "}
+					{new Date().toLocaleDateString("en-US", {
+						month: "long",
+						year: "numeric",
+						day: "numeric",
+					})}
+					{" until "}
+					{subscriptionEndDate}
+				</h3>
 				<button onClick={handleRegister}>Submit</button>
 				<button onClick={() => useNavigate1("/")}>Back</button>
 			</div>

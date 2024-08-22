@@ -77,5 +77,23 @@ const userRequests = {
 		});
 		return response;
 	},
+
+	validatePassword: async (user, password) => {
+		const response = await axios.get(parameters.baseUrl + "/users/validate", {
+			params: {
+				userId: user._id,
+				password: password,
+			},
+		});
+		return response;
+	},
+
+	changePassword: async (user, password) => {
+		const response = await axios.put(parameters.baseUrl + "/users/password", {
+			userId: user._id,
+			password: password,
+		});
+		return response;
+	},
 };
 export default userRequests;

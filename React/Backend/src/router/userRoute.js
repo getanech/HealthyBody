@@ -19,4 +19,8 @@ userRoute.get("/workouts", UsersMiddleware.getUserWorkouts);
 
 userRoute.delete("/workouts", UsersMiddleware.removeUserWorkout);
 
+userRoute.get("/validate/", UsersMiddleware.validatePassword);
+
+userRoute.put("/password/", UsersMiddleware.changePassword);
+
 module.exports = userRoute;

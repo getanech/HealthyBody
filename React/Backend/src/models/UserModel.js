@@ -71,6 +71,10 @@ const userSchema = new Schema({
 			},
 		},
 	],
+	subscriptionEnd: {
+		type: Date,
+		default: Date.now(),
+	},
 });
 
 module.exports = mongoose.model("User", userSchema);
