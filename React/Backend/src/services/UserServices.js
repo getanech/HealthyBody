@@ -1,4 +1,6 @@
 const User = require("../models/UserModel.js");
+const UserWorkout = require("../models/UserWorkoutModel.js");
+const Exercise = require("../models/ExerciseModel.js");
 const userServices = {
 	register: async (req, res) => {
 		const user = new User(req.body);
@@ -32,9 +34,16 @@ const userServices = {
 	getUser: async (req, res) => {
 		try {
 			// const user = await User.findById(req.query.userId);
-			const user = await User.findById(req.query.userId).populate(
-				"workouts.exercises.exercise"
-			);
+
+			const user = await User.findById(req.query.userId).populate({
+				path: "workouts",
+				model: "UserWorkout",
+				populate: {
+					path: "exercises.exercise",
+					model: "exercise",
+				},
+			});
+
 			if (!user) {
 				return {
 					success: false,
@@ -43,6 +52,7 @@ const userServices = {
 					data: null,
 				};
 			}
+			console.log("user", user);
 
 			return {
 				success: true,
@@ -63,12 +73,9 @@ const userServices = {
 
 	addWorkout: async (req, res) => {
 		try {
-			const user = await User.findByIdAndUpdate(
-				req.query.userId,
-				{ $push: { workouts: req.body.workout } },
-				{ new: true }
+			const user = await User.findOne({ _id: req.query.userId }).populate(
+				"workouts"
 			);
-
 			if (!user) {
 				return {
 					success: false,
@@ -77,6 +84,20 @@ const userServices = {
 					data: null,
 				};
 			}
+
+			for (let datePtr of req.body.workout.dates) {
+				const userWorkout = await UserWorkout.create({
+					baseWorkout: req.body.workout._id,
+					exercises: req.body.workout.exercises,
+					name: req.body.workout.name,
+					date: datePtr,
+				});
+
+				user.workouts.push(userWorkout);
+			}
+
+			await user.save();
+			console.log("user", user);
 
 			return {
 				success: true,
@@ -97,7 +118,8 @@ const userServices = {
 
 	getUserWorkouts: async (req, res) => {
 		try {
-			const user = await User.findById(req.query.userId, { workouts: 1 });
+			const user = await User.findById(req.query.userId).populate("workouts");
+
 			if (!user) {
 				return {
 					success: false,
@@ -106,6 +128,9 @@ const userServices = {
 					data: null,
 				};
 			}
+
+			if (!user.workouts) user.workouts = [];
+			await user.save();
 
 			return {
 				success: true,

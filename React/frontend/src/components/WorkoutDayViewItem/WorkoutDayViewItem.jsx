@@ -6,6 +6,7 @@ export default function WorkoutDayViewItem({
 	workoutData,
 	submitUpdate,
 }) {
+	// console.log("workout", workout);
 	const [editMode, setEditMode] = useState(false);
 
 	const renderExerciseWeight = (exercise) => {
@@ -73,7 +74,6 @@ export default function WorkoutDayViewItem({
 					}}
 				/>
 			);
-		console.log("exercise", exercise);
 		return exercise.reps ? exercise.reps : "-";
 	};
 
@@ -95,7 +95,7 @@ export default function WorkoutDayViewItem({
 				</div>
 				<div className="workoutExerciseTable">
 					<label>תרגיל</label>
-					<label>קבוצות שררים</label>
+					<label>קבוצות שרירים</label>
 					<label>חזרות</label>
 					<label>משקל עבודה</label>
 				</div>

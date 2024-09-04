@@ -30,12 +30,24 @@ export default function MyWorkouts() {
 		if (myWorkouts.length === 0) {
 			return <div>No Workouts Found</div>;
 		}
+
+		const groupedWorkouts = new Map();
+
+		for (let i = 0; i < myWorkouts.length; i++) {
+			if (!groupedWorkouts.has(myWorkouts[i].name)) {
+				groupedWorkouts.set(myWorkouts[i].name, [myWorkouts[i]]);
+			} else {
+				groupedWorkouts.get(myWorkouts[i].name).push(myWorkouts[i]);
+			}
+		}
+
 		return (
 			<div className="myWorkoutsList">
-				{myWorkouts.map((workout) => (
+				{Array.from(groupedWorkouts).map(([workoutName, workouts]) => (
 					<WorkoutDisplayRow
-						key={workout._id}
-						workout={workout}
+						key={workoutName}
+						workoutName={workoutName}
+						workouts={workouts}
 						removeAction={() => removeUserWorkout(workout._id)}
 					/>
 				))}

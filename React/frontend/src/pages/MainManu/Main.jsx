@@ -8,10 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function Main() {
 	const navigate = useNavigate();
-	const { user } = useContext(UserContext);
+	const { user, refreshUserInfoFromServer } = useContext(UserContext);
+
 	const [selectedDate, setSelectedDate] = useState(new Date());
 
 	useEffect(() => {
+		refreshUserInfoFromServer();
 		if (!user) navigate("/");
 	}, []);
 

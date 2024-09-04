@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const UserWorkoutModel = require("./UserWorkoutModel");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -40,40 +41,20 @@ const userSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	active: {
-		type: Boolean,
-		default: true,
-	},
 	workouts: [
 		{
-			name: {
-				type: String,
-				required: true,
-			},
-			exercises: [
-				{
-					exercise: {
-						type: Schema.Types.ObjectId,
-						ref: "exercise",
-					},
-					reps: Number,
-				},
-			],
-			dates: [
-				{
-					type: Date,
-					required: true,
-				},
-			],
-			active: {
-				type: Boolean,
-				default: true,
-			},
+			type: Schema.Types.ObjectId,
+			ref: "UserWorkout",
+			default: [],
 		},
 	],
 	subscriptionEnd: {
 		type: Date,
 		default: Date.now(),
+	},
+	active: {
+		type: Boolean,
+		default: true,
 	},
 });
 

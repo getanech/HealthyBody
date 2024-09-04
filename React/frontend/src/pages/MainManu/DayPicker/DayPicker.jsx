@@ -110,15 +110,17 @@ export default function DayPicker({ selectedDate, setDate }) {
 		);
 	};
 
+	console.log(user.workouts);
+
 	const isWorkoutDay = (date) => {
-		// return false;
-		const dateObj = new Date(date);
 		for (let workout of user.workouts) {
-			for (let workoutDate of workout.dates) {
-				if (dateObj.toDateString() == new Date(workoutDate).toDateString()) {
-					return true;
-				}
-			}
+			const workoutDate = new Date(workout.date);
+
+			if (
+				date.toISOString().slice(0, 10) ===
+				workoutDate.toISOString().slice(0, 10)
+			)
+				return true;
 		}
 		return false;
 	};

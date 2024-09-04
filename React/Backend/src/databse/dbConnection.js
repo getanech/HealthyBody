@@ -2,11 +2,13 @@ const mongoose = require("mongoose");
 const UserModel = require("../models/UserModel");
 const ExerciseModel = require("../models/ExerciseModel");
 const WorkoutModel = require("../models/WorkoutModel");
+const UserWorkoutModel = require("../models/UserWorkoutModel");
 
 const defaultExercise = require("../mockData/ExerciseData");
 const exerciseService = require("../services/ExerciseService");
 const WorkoutService = require("../services/WorkoutService");
 const defaultWorkouts = require("../mockData/WorkoutData");
+const UserWorkoutSchema = require("../models/UserWorkoutModel");
 
 const uri = "1234";
 const connectToServer = async () => {

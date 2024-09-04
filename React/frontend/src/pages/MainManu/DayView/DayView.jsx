@@ -28,11 +28,9 @@ export default function DayView({ date }) {
 		}
 
 		user.workouts = newWorkouts;
-		console.log("[USER BEFORE UPDATE REQ]", user);
 
 		const res = await userRequests.updateUser(user);
 		if (res.status == 200) {
-			// console.log("res.data.data", res.data.data);
 			updateUser(res.data.data);
 			setPopUpContent(
 				<Modal
@@ -44,17 +42,23 @@ export default function DayView({ date }) {
 	};
 
 	const fetchData = () => {
-		const dayWorkouts = [];
-		for (const workout of user.workouts) {
-			for (const workoutDate of workout.dates) {
-				if (
-					new Date(date).toDateString() == new Date(workoutDate).toDateString()
-				) {
-					dayWorkouts.push(workout);
-				}
-			}
-		}
-		setWorkoutData(dayWorkouts || null);
+		const dayWorkouts = user.workouts.filter((workout) => {
+			return (
+				new Date(date).toISOString().slice(0, 10) ===
+				new Date(workout.date).toISOString().slice(0, 10)
+			);
+		});
+		setWorkoutData(dayWorkouts || []);
+		// for (const workout of user.workouts) {
+		// 	for (const workoutDate of workout.dates) {
+		// 		if (
+		// 			new Date(date).toDateString() == new Date(workoutDate).toDateString()
+		// 		) {
+		// 			dayWorkouts.push(workout);
+		// 		}
+		// 	}
+		// }
+		// setWorkoutData(dayWorkouts || null);
 	};
 
 	const showWorkoutData = () => {

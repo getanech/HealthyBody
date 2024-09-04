@@ -1,5 +1,5 @@
 const Workout = require("../models/WorkoutModel.js");
-
+const User = require("../models/UserModel.js");
 const WorkoutService = {
 	createWorkout: async (data) => {
 		const workout = new Workout(data);
@@ -12,18 +12,21 @@ const WorkoutService = {
 		try {
 			const workoutId = req.params.workoutId;
 			const exerciseId = req.params.exerciseId;
+			const userId = req.params.userId;
 			const reps = req.body.reps;
-			const workoutObj = await Workout.findOne({ _id: workoutId });
+			const userObj = await User.findOne({ _id: userId });
+			const workoutObj = userObj.workouts.find((workout) => {
+				return workout._id == workoutId;
+			});
+			// const workoutObj = await Workout.findOne({ _id: workoutId });
 			for (const exercise of workoutObj.exercises) {
 				if (exercise == exerciseId) {
-					console.log("exercise", exercise);
 					exercise.reps = reps;
 					await exercise.save();
 				}
 			}
 
-			const response = await workoutObj.save();
-			console.log("response", response);
+			const response = await userObj.save();
 			if (response) {
 				return {
 					status: 200,
