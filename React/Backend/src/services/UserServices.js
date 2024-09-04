@@ -52,7 +52,6 @@ const userServices = {
 					data: null,
 				};
 			}
-			console.log("user", user);
 
 			return {
 				success: true,
@@ -97,7 +96,6 @@ const userServices = {
 			}
 
 			await user.save();
-			console.log("user", user);
 
 			return {
 				success: true,
@@ -151,12 +149,14 @@ const userServices = {
 
 	removeUserWorkout: async (req, res) => {
 		try {
-			const user = await User.findByIdAndUpdate(
-				req.query.userId,
-				{ $pull: { workouts: { _id: req.query.workoutId } } },
-				{ new: true }
-			);
-
+			const user = await User.findById(req.query.userId).populate("workouts");
+			for (let i = 0; i < user.workouts.length; i++) {
+				if (user.workouts[i]._id.toString() === req.query.workoutId) {
+					console.log("Removing: ", user.workouts[i]);
+					user.workouts.splice(i, 1);
+				}
+			}
+			await user.save();
 			if (!user) {
 				return {
 					success: false,
@@ -198,15 +198,19 @@ const userServices = {
 				};
 			}
 
-			req.body.workouts.map((workout, index) => {
-				user.workouts[index].exercises.map((exercise, exIndex) => {
-					exercise.reps = req.body.workouts[index].exercises[exIndex].reps;
-					if (workout.exercises[exIndex].exercise.weight) {
-						user.workouts[index].exercises[exIndex].exercise.weight =
-							workout.exercises[exIndex].exercise.weight;
-					}
-				});
-			});
+			for (let i = 0; i < user.workouts.length; i++) {
+				user.workouts[i] = req.body.workouts[i];
+			}
+
+			// user.workouts.map((workout, index) => {
+			// 	user.workouts[index].exercises.map((exercise, exIndex) => {
+			// 		exercise.reps = req.body.workouts[index].exercises[exIndex].reps;
+			// 		if (workout.exercises[exIndex].exercise.weight) {
+			// 			user.workouts[index].exercises[exIndex].exercise.weight =
+			// 				workout.exercises[exIndex].exercise.weight;
+			// 		}
+			// 	});
+			// });
 			await user.save();
 			const updatedUser = await User.findById(req.query.userId);
 			console.log("updatedUser", updatedUser);

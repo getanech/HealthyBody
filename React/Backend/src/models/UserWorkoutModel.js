@@ -18,6 +18,7 @@ const userWorkoutSchema = new Schema({
 				ref: "exercise",
 			},
 			reps: Number,
+			weight: Number,
 		},
 	],
 	date: {

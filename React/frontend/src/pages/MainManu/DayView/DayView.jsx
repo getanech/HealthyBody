@@ -16,18 +16,27 @@ export default function DayView({ date }) {
 		fetchData();
 	}, [date]);
 
-	const submitUpdate = async () => {
-		const newWorkouts = [];
-		for (const workout of user.workouts) {
-			const matchingWorkout = workoutData.find((w) => w._id == workout._id);
-			if (matchingWorkout) {
-				newWorkouts.push({ ...workout, ...matchingWorkout });
-			} else {
-				newWorkouts.push(workout);
+	const submitUpdate = async (updatedWorkoutObject) => {
+		// if(!user || !user.workouts) return;
+		for (let i = 0; i < user.workouts.length; i++) {
+			if (user.workouts[i]._id == updatedWorkoutObject._id) {
+				user.workouts[i] = updatedWorkoutObject;
+				break;
 			}
 		}
+		console.log("user.workouts", user.workouts);
 
-		user.workouts = newWorkouts;
+		// const newWorkouts = [];
+		// for (const workout of user.workouts) {
+		// 	const matchingWorkout = workoutData.find((w) => w._id == workout._id);
+		// 	if (matchingWorkout) {
+		// 		newWorkouts.push({ ...workout, ...matchingWorkout });
+		// 	} else {
+		// 		newWorkouts.push(workout);
+		// 	}
+		// }
+
+		// user.workouts = newWorkouts;
 
 		const res = await userRequests.updateUser(user);
 		if (res.status == 200) {

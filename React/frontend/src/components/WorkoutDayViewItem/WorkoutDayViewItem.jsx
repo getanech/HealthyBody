@@ -8,35 +8,39 @@ export default function WorkoutDayViewItem({
 }) {
 	// console.log("workout", workout);
 	const [editMode, setEditMode] = useState(false);
+	const [tempWorkoutObject, setTempWorkoutObject] = useState({
+		...workout,
+	});
 
 	const renderExerciseWeight = (exercise) => {
 		if (editMode)
 			return (
 				<input
 					type="number"
-					defaultValue={exercise.exercise.weight ? exercise.exercise.weight : 0}
+					defaultValue={exercise.weight ? exercise.weight : 0}
 					onChange={(e) => {
-						exercise.exercise.weight = parseInt(e.target.value);
-						const updatedExercise = {
-							...exercise,
-							exercise: {
-								...exercise.exercise,
-								weight: parseInt(e.target.value),
-							},
-						};
-						const updatedWorkout = {
-							...workout,
-							exercises: workout.exercises.map((ex) =>
-								ex._id === exercise._id ? updatedExercise : ex
-							),
-						};
+						exercise.weight = parseInt(e.target.value);
 
-						const updatedWorkouts = [...workoutData];
-						const workoutIndex = updatedWorkouts.findIndex(
-							(w) => w._id === workout._id
-						);
-						updatedWorkouts[workoutIndex] = updatedWorkout;
-						setWorkoutData(updatedWorkouts);
+						// const updatedExercise = {
+						// 	...exercise,
+						// 	exercise: {
+						// 		...exercise.exercise,
+						// 		weight: parseInt(e.target.value),
+						// 	},
+						// };
+						// const updatedWorkout = {
+						// 	...workout,
+						// 	exercises: workout.exercises.map((ex) =>
+						// 		ex._id === exercise._id ? updatedExercise : ex
+						// 	),
+						// };
+
+						// const updatedWorkouts = [...workoutData];
+						// const workoutIndex = updatedWorkouts.findIndex(
+						// 	(w) => w._id === workout._id
+						// );
+						// updatedWorkouts[workoutIndex] = updatedWorkout;
+						// setWorkoutData(updatedWorkouts);
 					}}
 				/>
 			);
@@ -51,26 +55,26 @@ export default function WorkoutDayViewItem({
 					defaultValue={exercise.reps ? exercise.reps : 0}
 					onChange={(e) => {
 						exercise.reps = parseInt(e.target.value);
-						const updatedExercise = {
-							...exercise,
-							reps: parseInt(e.target.value),
-							// exercise: {
-							// 	...exercise.exercise,
-							// },
-						};
-						const updatedWorkout = {
-							...workout,
-							exercises: workout.exercises.map((ex) =>
-								ex._id === exercise._id ? updatedExercise : ex
-							),
-						};
+						// const updatedExercise = {
+						// 	...exercise,
+						// 	reps: parseInt(e.target.value),
+						// 	// exercise: {
+						// 	// 	...exercise.exercise,
+						// 	// },
+						// };
+						// const updatedWorkout = {
+						// 	...workout,
+						// 	exercises: workout.exercises.map((ex) =>
+						// 		ex._id === exercise._id ? updatedExercise : ex
+						// 	),
+						// };
 
-						const updatedWorkouts = [...workoutData];
-						const workoutIndex = updatedWorkouts.findIndex(
-							(w) => w._id === workout._id
-						);
-						updatedWorkouts[workoutIndex] = updatedWorkout;
-						setWorkoutData(updatedWorkouts);
+						// const updatedWorkouts = [...workoutData];
+						// const workoutIndex = updatedWorkouts.findIndex(
+						// 	(w) => w._id === workout._id
+						// );
+						// updatedWorkouts[workoutIndex] = updatedWorkout;
+						// setWorkoutData(updatedWorkouts);
 					}}
 				/>
 			);
@@ -83,7 +87,7 @@ export default function WorkoutDayViewItem({
 
 			<div className="workoutExercises">
 				<div className="workoutActionPanel">
-					<button onClick={() => submitUpdate()}>✌️</button>
+					<button onClick={() => submitUpdate(tempWorkoutObject)}>✌️</button>
 
 					<button
 						onClick={() => {
@@ -99,7 +103,7 @@ export default function WorkoutDayViewItem({
 					<label>חזרות</label>
 					<label>משקל עבודה</label>
 				</div>
-				{workout.exercises.map((exercise, index) => {
+				{tempWorkoutObject.exercises.map((exercise, index) => {
 					return (
 						<div key={index} className="workoutExerciseTable">
 							<label>{exercise.exercise.name}</label>

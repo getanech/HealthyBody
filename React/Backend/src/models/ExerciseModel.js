@@ -12,9 +12,6 @@ const exercisesSchema = new Schema({
 			type: String,
 		},
 	],
-	weight: {
-		type: Number,
-	},
 });
 
 module.exports = mongoose.model("exercise", exercisesSchema);

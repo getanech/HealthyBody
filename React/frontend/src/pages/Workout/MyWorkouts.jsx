@@ -7,8 +7,16 @@ export default function MyWorkouts() {
 	const { user, refreshUserInfoFromServer } = useContext(UserContext);
 	const [myWorkouts, setMyWorkouts] = useState([]);
 
-	const removeUserWorkout = async (workoutId) => {
-		const response = await userRequests.removeUserWorkout(user._id, workoutId);
+	const removeUserWorkouts = async (workouts) => {
+		for await (const workout of workouts) {
+			const response = await userRequests.removeUserWorkout(
+				user._id,
+				workout._id
+			);
+		}
+
+		alert("Workouts removed successfully");
+
 		await refreshUserInfoFromServer();
 		await refreshUserWorkouts();
 	};
@@ -43,12 +51,13 @@ export default function MyWorkouts() {
 
 		return (
 			<div className="myWorkoutsList">
-				{Array.from(groupedWorkouts).map(([workoutName, workouts]) => (
+				{Array.from(groupedWorkouts).map(([workoutName, index]) => (
 					<WorkoutDisplayRow
 						key={workoutName}
 						workoutName={workoutName}
-						workouts={workouts}
-						removeAction={() => removeUserWorkout(workout._id)}
+						removeAction={() =>
+							removeUserWorkouts(groupedWorkouts.get(workoutName))
+						}
 					/>
 				))}
 			</div>

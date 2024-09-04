@@ -1,10 +1,6 @@
 import "./workoutDisplayRow.css";
 
-export default function WorkoutDisplayRow({
-	workoutName,
-	workouts,
-	removeAction,
-}) {
+export default function WorkoutDisplayRow({ workoutName, removeAction }) {
 	return (
 		<div className="workoutDisplayRow">
 			<div>
