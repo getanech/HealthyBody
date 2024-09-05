@@ -89,6 +89,13 @@ const UsersMiddleware = {
 			.status(response.status)
 			.json({ message: response.message, data: response.data });
 	},
+
+	updateUserWorkout: async (req, res, next) => {
+		const response = await userServices.updateUserWorkout(req, res, next);
+		return res
+			.status(response.status)
+			.json({ message: response.message, data: response.data });
+	},
 };
 
 module.exports = UsersMiddleware;

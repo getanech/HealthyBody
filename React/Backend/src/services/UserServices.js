@@ -37,7 +37,7 @@ const userServices = {
 
 			const user = await User.findById(req.query.userId).populate({
 				path: "workouts",
-				model: "UserWorkout",
+				model: "Workout",
 				populate: {
 					path: "exercises.exercise",
 					model: "exercise",
@@ -198,9 +198,20 @@ const userServices = {
 				};
 			}
 
+			console.log("user.workouts[i].exercises", user.workouts);
 			for (let i = 0; i < user.workouts.length; i++) {
-				user.workouts[i] = req.body.workouts[i];
+				// for (let j = 0; j < user.workouts[i].exercises.length; j++) {
+				// 	console.log(
+				// 		"user.workouts[i].exercises",
+				// 		user.workouts[i].exercises[i]
+				// 	);
+				// }
 			}
+
+			// for (let i = 0; i < user.workouts.length; i++) {
+			// 	user.workouts[i] = req.body.workouts[i];
+
+			// }
 
 			// user.workouts.map((workout, index) => {
 			// 	user.workouts[index].exercises.map((exercise, exIndex) => {
@@ -211,9 +222,8 @@ const userServices = {
 			// 		}
 			// 	});
 			// });
-			await user.save();
+			// await user.save();
 			const updatedUser = await User.findById(req.query.userId);
-			console.log("updatedUser", updatedUser);
 
 			return {
 				success: true,
@@ -288,6 +298,65 @@ const userServices = {
 			return {
 				success: false,
 				message: "Error changing password",
+				status: 500,
+				data: null,
+			};
+		}
+	},
+
+	updateUserWorkout: async (req, res) => {
+		try {
+			const user = await User.findById(req.body.userId).populate({
+				path: "workouts",
+				populate: {
+					path: "exercises.exercise",
+					model: "exercise",
+				},
+			});
+
+			for (let i = 0; i < user.workouts.length; i++) {
+				if (user.workouts[i]._id == req.body.workout._id) {
+					user.workouts[i] = req.body.workout;
+					await user.save();
+					return {
+						success: true,
+						message: "User updated successfully",
+						status: 200,
+						data: user,
+					};
+				}
+			}
+
+			// for (let i = 0; i < req.body.workout.exercises.length; i++) {
+			// 	console.log(
+			// 		"req.body.workout.exercises",
+			// 		req.body.workout.exercises[i]
+			// 	);
+			// }
+
+			// findByIdAndUpdate(req.query.userId, {
+			// 	$set: req.body,
+			// }).populate("workouts.exercises.exercise");
+			// if (!user) {
+			// 	return {
+			// 		success: false,
+			// 		message: "User not found",
+			// 		status: 404,
+			// 		data: null,
+			// 	};
+			// }
+
+			return {
+				success: true,
+				message: "User updated successfully",
+				status: 200,
+				data: user,
+			};
+		} catch (error) {
+			console.log("error", error);
+			return {
+				success: false,
+				message: "Error updating user",
 				status: 500,
 				data: null,
 			};

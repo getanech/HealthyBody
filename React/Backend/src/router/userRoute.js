@@ -16,6 +16,7 @@ userRoute.post("/workouts", UsersMiddleware.addUserWorkout);
 
 userRoute.put("/", UsersMiddleware.updateUser);
 userRoute.put("/password/", UsersMiddleware.changePassword);
+userRoute.put("/workouts", UsersMiddleware.updateUserWorkout);
 
 userRoute.delete("/workouts", UsersMiddleware.removeUserWorkout);
 

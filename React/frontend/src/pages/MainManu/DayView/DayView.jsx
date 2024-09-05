@@ -17,15 +17,31 @@ export default function DayView({ date }) {
 	}, [date]);
 
 	const submitUpdate = async (updatedWorkoutObject) => {
-		// if(!user || !user.workouts) return;
+		// console.log("updatedWorkoutObject", updatedWorkoutObject);
 		for (let i = 0; i < user.workouts.length; i++) {
 			if (user.workouts[i]._id == updatedWorkoutObject._id) {
 				user.workouts[i] = updatedWorkoutObject;
 				break;
 			}
 		}
-		console.log("user.workouts", user.workouts);
 
+		const res = await userRequests.updateUserWorkout(
+			user,
+			updatedWorkoutObject
+		);
+
+		console.log("es.status", res.status);
+		console.log("res.data.data", res.data.data);
+		if (res.status == 200) {
+			updateUser(res.data.data);
+			setPopUpContent(
+				<Modal
+					message="המשימה עודכנה בהצלחה"
+					close={() => setPopUpContent(<></>)}
+				/>
+			);
+		}
+		// console.log("user.workouts", user.workouts);
 		// const newWorkouts = [];
 		// for (const workout of user.workouts) {
 		// 	const matchingWorkout = workoutData.find((w) => w._id == workout._id);
@@ -38,16 +54,16 @@ export default function DayView({ date }) {
 
 		// user.workouts = newWorkouts;
 
-		const res = await userRequests.updateUser(user);
-		if (res.status == 200) {
-			updateUser(res.data.data);
-			setPopUpContent(
-				<Modal
-					message="המשתמש עודכן בהצלחה"
-					close={() => setPopUpContent(<></>)}
-				/>
-			);
-		}
+		// const res = await userRequests.updateUser(user);
+		// if (res.status == 200) {
+		// 	// updateUser(res.data.data);
+		// 	setPopUpContent(
+		// 		<Modal
+		// 			message="המשתמש עודכן בהצלחה"
+		// 			close={() => setPopUpContent(<></>)}
+		// 		/>
+		// 	);
+		// }
 	};
 
 	const fetchData = () => {

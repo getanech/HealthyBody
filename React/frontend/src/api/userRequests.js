@@ -95,5 +95,13 @@ const userRequests = {
 		});
 		return response;
 	},
+
+	updateUserWorkout: async (user, workout) => {
+		const response = await axios.put(parameters.baseUrl + "/users/workouts", {
+			userId: user._id,
+			workout: workout,
+		});
+		return response;
+	},
 };
 export default userRequests;
