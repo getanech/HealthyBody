@@ -37,7 +37,7 @@ const userServices = {
 
 			const user = await User.findById(req.query.userId).populate({
 				path: "workouts",
-				model: "Workout",
+				model: "UserWorkout",
 				populate: {
 					path: "exercises.exercise",
 					model: "exercise",
@@ -308,6 +308,7 @@ const userServices = {
 		try {
 			const user = await User.findById(req.body.userId).populate({
 				path: "workouts",
+				model: "UserWorkout",
 				populate: {
 					path: "exercises.exercise",
 					model: "exercise",
@@ -318,6 +319,8 @@ const userServices = {
 				if (user.workouts[i]._id == req.body.workout._id) {
 					user.workouts[i] = req.body.workout;
 					await user.save();
+					console.log("user.workouts[i]", user.workouts[i]);
+
 					return {
 						success: true,
 						message: "User updated successfully",
