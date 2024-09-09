@@ -6,9 +6,14 @@ export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
 	const navigate = useNavigate();
-	const [user, setUser] = useState(
-		JSON.parse(localStorage.getItem("user")) || null
-	);
+
+	const getUserFromStorage = () => {
+		const userObject = JSON.parse(localStorage.getItem("user")) || null;
+		console.log("userObject", userObject);
+		return userObject;
+	};
+
+	const [user, setUser] = useState(getUserFromStorage());
 
 	const refreshUserInfoFromServer = async () => {
 		const response = await userRequests.getUserInfo(user._id);
@@ -16,15 +21,18 @@ export const UserProvider = ({ children }) => {
 		setUser(data);
 	};
 
+	// useEffect(() => {
+	// 	getUserFromStorage();
+	// }, []);
+
 	useEffect(() => {
-		console.log("user", user);
 		if (user) localStorage.setItem("user", JSON.stringify(user));
 		else localStorage.removeItem("user");
 	}, [user]);
 
-	const updateUser = (user) => {
-		setUser(user);
-		localStorage.setItem("user", JSON.stringify(user));
+	const updateUser = (updatedUser) => {
+		localStorage.setItem("user", JSON.stringify(updatedUser));
+		setUser(getUserFromStorage());
 	};
 
 	const removeUser = () => {

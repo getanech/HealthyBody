@@ -33,8 +33,6 @@ const userServices = {
 
 	getUser: async (req, res) => {
 		try {
-			// const user = await User.findById(req.query.userId);
-
 			const user = await User.findById(req.query.userId).populate({
 				path: "workouts",
 				model: "UserWorkout",
@@ -152,7 +150,6 @@ const userServices = {
 			const user = await User.findById(req.query.userId).populate("workouts");
 			for (let i = 0; i < user.workouts.length; i++) {
 				if (user.workouts[i]._id.toString() === req.query.workoutId) {
-					console.log("Removing: ", user.workouts[i]);
 					user.workouts.splice(i, 1);
 				}
 			}
@@ -198,31 +195,6 @@ const userServices = {
 				};
 			}
 
-			console.log("user.workouts[i].exercises", user.workouts);
-			for (let i = 0; i < user.workouts.length; i++) {
-				// for (let j = 0; j < user.workouts[i].exercises.length; j++) {
-				// 	console.log(
-				// 		"user.workouts[i].exercises",
-				// 		user.workouts[i].exercises[i]
-				// 	);
-				// }
-			}
-
-			// for (let i = 0; i < user.workouts.length; i++) {
-			// 	user.workouts[i] = req.body.workouts[i];
-
-			// }
-
-			// user.workouts.map((workout, index) => {
-			// 	user.workouts[index].exercises.map((exercise, exIndex) => {
-			// 		exercise.reps = req.body.workouts[index].exercises[exIndex].reps;
-			// 		if (workout.exercises[exIndex].exercise.weight) {
-			// 			user.workouts[index].exercises[exIndex].exercise.weight =
-			// 				workout.exercises[exIndex].exercise.weight;
-			// 		}
-			// 	});
-			// });
-			// await user.save();
 			const updatedUser = await User.findById(req.query.userId);
 
 			return {
@@ -254,7 +226,6 @@ const userServices = {
 					data: null,
 				};
 			}
-			// const isPasswordValid = await bcrypt.compare(password, user.password);
 			return {
 				success: true,
 				message: "User validated successfully",
@@ -304,67 +275,116 @@ const userServices = {
 		}
 	},
 
-	updateUserWorkout: async (req, res) => {
-		try {
-			const user = await User.findById(req.body.userId).populate({
-				path: "workouts",
-				model: "UserWorkout",
-				populate: {
-					path: "exercises.exercise",
-					model: "exercise",
-				},
-			});
+	// updateUserWorkout: async (req, res) => {
+	// 	try {
+	// 		// Use findOneAndUpdate to directly update the workout and exercises
+	// 		const updateWorkout = await User.findOneAndUpdate(
+	// 			{ _id: req.body.userId, "workouts._id": req.body.workout._id }, // Find the user and the specific workout
+	// 			{
+	// 				$set: {
+	// 					"workouts.$.exercises": req.body.workout.exercises, // Directly update exercises
+	// 				},
+	// 			},
+	// 			{ new: true } // Return the updated document
+	// 		).populate({
+	// 			path: "workouts",
+	// 			model: "UserWorkout",
+	// 			populate: [
+	// 				{
+	// 					path: "exercises.exercise",
+	// 					model: "exercise",
+	// 				},
+	// 			],
+	// 		});
 
-			for (let i = 0; i < user.workouts.length; i++) {
-				if (user.workouts[i]._id == req.body.workout._id) {
-					user.workouts[i] = req.body.workout;
-					await user.save();
-					console.log("user.workouts[i]", user.workouts[i]);
+	// 		// Check if the workout was updated
+	// 		if (!updateWorkout) {
+	// 			return res.status(404).json({
+	// 				success: false,
+	// 				message: "Workout not found for the user",
+	// 			});
+	// 		}
 
-					return {
-						success: true,
-						message: "User updated successfully",
-						status: 200,
-						data: user,
-					};
-				}
-			}
+	// 		// Respond with the updated user
+	// 		return res.status(200).json({
+	// 			success: true,
+	// 			message: "User workout updated successfully",
+	// 			data: updateWorkout,
+	// 		});
+	// 	} catch (error) {
+	// 		console.error("Error updating user workout:", error);
+	// 		return res.status(500).json({
+	// 			success: false,
+	// 			message: "Internal server error",
+	// 		});
+	// 	}
+	// },
 
-			// for (let i = 0; i < req.body.workout.exercises.length; i++) {
-			// 	console.log(
-			// 		"req.body.workout.exercises",
-			// 		req.body.workout.exercises[i]
-			// 	);
-			// }
 
-			// findByIdAndUpdate(req.query.userId, {
-			// 	$set: req.body,
-			// }).populate("workouts.exercises.exercise");
-			// if (!user) {
-			// 	return {
-			// 		success: false,
-			// 		message: "User not found",
-			// 		status: 404,
-			// 		data: null,
-			// 	};
-			// }
 
-			return {
-				success: true,
-				message: "User updated successfully",
-				status: 200,
-				data: user,
-			};
-		} catch (error) {
-			console.log("error", error);
-			return {
-				success: false,
-				message: "Error updating user",
-				status: 500,
-				data: null,
-			};
-		}
-	},
+	
+	// updateUserWorkout: async (req, res) => {
+	// 	try {
+	// 		const user = await User.findById(req.body.userId).populate({
+	// 			path: "workouts",
+	// 			model: "UserWorkout",
+	// 			populate: [
+	// 				{
+	// 					path: "exercises.exercise",
+	// 					model: "exercise",
+	// 				},
+	// 			],
+	// 		});
+
+	// 		for (let i = 0; i < user.workouts.length; i++) {
+	// 			if (user.workouts[i]._id == req.body.workout._id) {
+	// 				user.workouts[i] = req.body.workout;
+	// 				// for (let j = 0; j < req.body.workout.exercises.length; j++) {
+	// 				// 	user.workouts[i].exercises[j].reps =
+	// 				// 		req.body.workout.exercises[j].reps;
+	// 				// 	user.workouts[i].exercises[j].weight =
+	// 				// 		req.body.workout.exercises[j].weight;
+	// 				// }
+	// 				user.markModified("workouts");
+	// 				await user.save();
+	// 				console.log("user", user);
+	// 				const updatedUser = await User.findById(req.body.userId).populate({
+	// 					path: "workouts",
+	// 					model: "UserWorkout",
+	// 					populate: [
+	// 						{
+	// 							path: "exercises.exercise",
+	// 							model: "exercise",
+	// 						},
+	// 					],
+	// 				});
+	// 				console.log("updatedUser", updatedUser);
+	// 				// return { status: 404 };
+	// 				return {
+	// 					success: true,
+	// 					message: "User updated successfully",
+	// 					status: 200,
+	// 					data: user,
+	// 				};
+	// 			}
+	// 		}
+
+	// 		return {
+	// 			success: true,
+	// 			message: "User updated successfully",
+	// 			status: 200,
+	// 			data: user,
+	// 		};
+	// 	} catch (error) {
+	// 		console.log("error", error);
+	// 		return {
+	// 			success: false,
+	// 			message: "Error updating user",
+	// 			status: 500,
+	// 			data: null,
+	// 		};
+	// 	}
+	// },
 };
 
 module.exports = userServices;

@@ -10,6 +10,8 @@ export default function Main() {
 	const navigate = useNavigate();
 	const { user, refreshUserInfoFromServer } = useContext(UserContext);
 
+	// return <></>;
+
 	const [selectedDate, setSelectedDate] = useState(new Date());
 
 	useEffect(() => {

@@ -1,12 +1,6 @@
 import React, { useContext, useState } from "react";
 
-export default function WorkoutDayViewItem({
-	workout,
-	setWorkoutData,
-	workoutData,
-	submitUpdate,
-}) {
-	// console.log("workout", workout);
+export default function WorkoutDayViewItem({ workout, submitUpdate }) {
 	const [editMode, setEditMode] = useState(false);
 	const [tempWorkoutObject, setTempWorkoutObject] = useState({
 		...workout,
@@ -20,31 +14,10 @@ export default function WorkoutDayViewItem({
 					defaultValue={exercise.weight ? exercise.weight : 0}
 					onChange={(e) => {
 						exercise.weight = parseInt(e.target.value);
-
-						// const updatedExercise = {
-						// 	...exercise,
-						// 	exercise: {
-						// 		...exercise.exercise,
-						// 		weight: parseInt(e.target.value),
-						// 	},
-						// };
-						// const updatedWorkout = {
-						// 	...workout,
-						// 	exercises: workout.exercises.map((ex) =>
-						// 		ex._id === exercise._id ? updatedExercise : ex
-						// 	),
-						// };
-
-						// const updatedWorkouts = [...workoutData];
-						// const workoutIndex = updatedWorkouts.findIndex(
-						// 	(w) => w._id === workout._id
-						// );
-						// updatedWorkouts[workoutIndex] = updatedWorkout;
-						// setWorkoutData(updatedWorkouts);
 					}}
 				/>
 			);
-		return exercise.exercise.weight ? exercise.exercise.weight : "-";
+		return exercise.weight ? exercise.weight : "-";
 	};
 
 	const renderExerciseReps = (exercise) => {
@@ -55,26 +28,6 @@ export default function WorkoutDayViewItem({
 					defaultValue={exercise.reps ? exercise.reps : 0}
 					onChange={(e) => {
 						exercise.reps = parseInt(e.target.value);
-						// const updatedExercise = {
-						// 	...exercise,
-						// 	reps: parseInt(e.target.value),
-						// 	// exercise: {
-						// 	// 	...exercise.exercise,
-						// 	// },
-						// };
-						// const updatedWorkout = {
-						// 	...workout,
-						// 	exercises: workout.exercises.map((ex) =>
-						// 		ex._id === exercise._id ? updatedExercise : ex
-						// 	),
-						// };
-
-						// const updatedWorkouts = [...workoutData];
-						// const workoutIndex = updatedWorkouts.findIndex(
-						// 	(w) => w._id === workout._id
-						// );
-						// updatedWorkouts[workoutIndex] = updatedWorkout;
-						// setWorkoutData(updatedWorkouts);
 					}}
 				/>
 			);

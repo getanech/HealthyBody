@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import "./dayView.css";
-import mockData from "../../../mockData";
-import { json } from "react-router-dom";
 import UserContext from "../../../context/UserContext";
 import WorkoutDayViewItem from "../../../components/WorkoutDayViewItem";
 import userRequests from "../../../api/userRequests";
@@ -17,7 +15,6 @@ export default function DayView({ date }) {
 	}, [date]);
 
 	const submitUpdate = async (updatedWorkoutObject) => {
-		// console.log("updatedWorkoutObject", updatedWorkoutObject);
 		for (let i = 0; i < user.workouts.length; i++) {
 			if (user.workouts[i]._id == updatedWorkoutObject._id) {
 				user.workouts[i] = updatedWorkoutObject;
@@ -30,8 +27,6 @@ export default function DayView({ date }) {
 			updatedWorkoutObject
 		);
 
-		console.log("es.status", res.status);
-		console.log("res.data.data", res.data.data);
 		if (res.status == 200) {
 			updateUser(res.data.data);
 			setPopUpContent(
@@ -41,29 +36,6 @@ export default function DayView({ date }) {
 				/>
 			);
 		}
-		// console.log("user.workouts", user.workouts);
-		// const newWorkouts = [];
-		// for (const workout of user.workouts) {
-		// 	const matchingWorkout = workoutData.find((w) => w._id == workout._id);
-		// 	if (matchingWorkout) {
-		// 		newWorkouts.push({ ...workout, ...matchingWorkout });
-		// 	} else {
-		// 		newWorkouts.push(workout);
-		// 	}
-		// }
-
-		// user.workouts = newWorkouts;
-
-		// const res = await userRequests.updateUser(user);
-		// if (res.status == 200) {
-		// 	// updateUser(res.data.data);
-		// 	setPopUpContent(
-		// 		<Modal
-		// 			message="המשתמש עודכן בהצלחה"
-		// 			close={() => setPopUpContent(<></>)}
-		// 		/>
-		// 	);
-		// }
 	};
 
 	const fetchData = () => {
@@ -74,16 +46,6 @@ export default function DayView({ date }) {
 			);
 		});
 		setWorkoutData(dayWorkouts || []);
-		// for (const workout of user.workouts) {
-		// 	for (const workoutDate of workout.dates) {
-		// 		if (
-		// 			new Date(date).toDateString() == new Date(workoutDate).toDateString()
-		// 		) {
-		// 			dayWorkouts.push(workout);
-		// 		}
-		// 	}
-		// }
-		// setWorkoutData(dayWorkouts || null);
 	};
 
 	const showWorkoutData = () => {
@@ -102,8 +64,6 @@ export default function DayView({ date }) {
 						<WorkoutDayViewItem
 							key={index}
 							workout={workout}
-							setWorkoutData={setWorkoutData}
-							workoutData={workoutData}
 							submitUpdate={submitUpdate}
 						/>
 					);
