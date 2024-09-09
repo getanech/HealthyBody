@@ -9,7 +9,6 @@ export const UserProvider = ({ children }) => {
 
 	const getUserFromStorage = () => {
 		const userObject = JSON.parse(localStorage.getItem("user")) || null;
-		console.log("userObject", userObject);
 		return userObject;
 	};
 

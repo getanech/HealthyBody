@@ -1,12 +1,17 @@
-import React, { useContext, useState } from "react";
-
+import React, { useContext, useEffect, useState } from "react";
+import "./workoutDayViewItem.css";
 export default function WorkoutDayViewItem({ workout, submitUpdate }) {
 	const [editMode, setEditMode] = useState(false);
-	const [tempWorkoutObject, setTempWorkoutObject] = useState({
-		...workout,
-	});
+	const [tempWorkoutObject, setTempWorkoutObject] = useState(null);
+
+	useEffect(() => {
+		setTempWorkoutObject({
+			...workout,
+		});
+	}, [workout]);
 
 	const renderExerciseWeight = (exercise) => {
+		if (!tempWorkoutObject) return <></>;
 		if (editMode)
 			return (
 				<input
@@ -40,15 +45,30 @@ export default function WorkoutDayViewItem({ workout, submitUpdate }) {
 
 			<div className="workoutExercises">
 				<div className="workoutActionPanel">
-					<button onClick={() => submitUpdate(tempWorkoutObject)}>✌️</button>
+					<div className="workoutCurrentWeight">
+						<label>Weight:</label>
+						<input
+							type="number"
+							defaultValue={workout.currentWeight ? workout.currentWeight : -1}
+							onChange={(e) => {
+								setTempWorkoutObject({
+									...tempWorkoutObject,
+									currentWeight: parseInt(e.target.value),
+								});
+							}}
+						/>
+					</div>
+					<div>
+						<button onClick={() => submitUpdate(tempWorkoutObject)}>✌️</button>
 
-					<button
-						onClick={() => {
-							setEditMode(!editMode);
-						}}
-					>
-						🖊️
-					</button>
+						<button
+							onClick={() => {
+								setEditMode(!editMode);
+							}}
+						>
+							🖊️
+						</button>
+					</div>
 				</div>
 				<div className="workoutExerciseTable">
 					<label>תרגיל</label>
@@ -56,16 +76,17 @@ export default function WorkoutDayViewItem({ workout, submitUpdate }) {
 					<label>חזרות</label>
 					<label>משקל עבודה</label>
 				</div>
-				{tempWorkoutObject.exercises.map((exercise, index) => {
-					return (
-						<div key={index} className="workoutExerciseTable">
-							<label>{exercise.exercise.name}</label>
-							<label>{exercise.exercise.muscleGroups.join(", ")}</label>
-							<label>{renderExerciseReps(exercise)}</label>
-							<label>{renderExerciseWeight(exercise)}</label>
-						</div>
-					);
-				})}
+				{tempWorkoutObject &&
+					tempWorkoutObject.exercises.map((exercise, index) => {
+						return (
+							<div key={index} className="workoutExerciseTable">
+								<label>{exercise.exercise.name}</label>
+								<label>{exercise.exercise.muscleGroups.join(", ")}</label>
+								<label>{renderExerciseReps(exercise)}</label>
+								<label>{renderExerciseWeight(exercise)}</label>
+							</div>
+						);
+					})}
 			</div>
 		</div>
 	);

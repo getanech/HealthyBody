@@ -1,6 +1,7 @@
 const User = require("../models/UserModel.js");
 const UserWorkout = require("../models/UserWorkoutModel.js");
 const Exercise = require("../models/ExerciseModel.js");
+const UserWorkoutModel = require("../models/UserWorkoutModel.js");
 const userServices = {
 	register: async (req, res) => {
 		const user = new User(req.body);
@@ -33,6 +34,9 @@ const userServices = {
 
 	getUser: async (req, res) => {
 		try {
+			console.log("req.query", req.query);
+			console.log("req.body", req.body);
+
 			const user = await User.findById(req.query.userId).populate({
 				path: "workouts",
 				model: "UserWorkout",
@@ -275,116 +279,30 @@ const userServices = {
 		}
 	},
 
-	// updateUserWorkout: async (req, res) => {
-	// 	try {
-	// 		// Use findOneAndUpdate to directly update the workout and exercises
-	// 		const updateWorkout = await User.findOneAndUpdate(
-	// 			{ _id: req.body.userId, "workouts._id": req.body.workout._id }, // Find the user and the specific workout
-	// 			{
-	// 				$set: {
-	// 					"workouts.$.exercises": req.body.workout.exercises, // Directly update exercises
-	// 				},
-	// 			},
-	// 			{ new: true } // Return the updated document
-	// 		).populate({
-	// 			path: "workouts",
-	// 			model: "UserWorkout",
-	// 			populate: [
-	// 				{
-	// 					path: "exercises.exercise",
-	// 					model: "exercise",
-	// 				},
-	// 			],
-	// 		});
-
-	// 		// Check if the workout was updated
-	// 		if (!updateWorkout) {
-	// 			return res.status(404).json({
-	// 				success: false,
-	// 				message: "Workout not found for the user",
-	// 			});
-	// 		}
-
-	// 		// Respond with the updated user
-	// 		return res.status(200).json({
-	// 			success: true,
-	// 			message: "User workout updated successfully",
-	// 			data: updateWorkout,
-	// 		});
-	// 	} catch (error) {
-	// 		console.error("Error updating user workout:", error);
-	// 		return res.status(500).json({
-	// 			success: false,
-	// 			message: "Internal server error",
-	// 		});
-	// 	}
-	// },
-
-
-
-	
-	// updateUserWorkout: async (req, res) => {
-	// 	try {
-	// 		const user = await User.findById(req.body.userId).populate({
-	// 			path: "workouts",
-	// 			model: "UserWorkout",
-	// 			populate: [
-	// 				{
-	// 					path: "exercises.exercise",
-	// 					model: "exercise",
-	// 				},
-	// 			],
-	// 		});
-
-	// 		for (let i = 0; i < user.workouts.length; i++) {
-	// 			if (user.workouts[i]._id == req.body.workout._id) {
-	// 				user.workouts[i] = req.body.workout;
-	// 				// for (let j = 0; j < req.body.workout.exercises.length; j++) {
-	// 				// 	user.workouts[i].exercises[j].reps =
-	// 				// 		req.body.workout.exercises[j].reps;
-	// 				// 	user.workouts[i].exercises[j].weight =
-	// 				// 		req.body.workout.exercises[j].weight;
-	// 				// }
-	// 				user.markModified("workouts");
-	// 				await user.save();
-	// 				console.log("user", user);
-	// 				const updatedUser = await User.findById(req.body.userId).populate({
-	// 					path: "workouts",
-	// 					model: "UserWorkout",
-	// 					populate: [
-	// 						{
-	// 							path: "exercises.exercise",
-	// 							model: "exercise",
-	// 						},
-	// 					],
-	// 				});
-	// 				console.log("updatedUser", updatedUser);
-	// 				// return { status: 404 };
-	// 				return {
-	// 					success: true,
-	// 					message: "User updated successfully",
-	// 					status: 200,
-	// 					data: user,
-	// 				};
-	// 			}
-	// 		}
-
-	// 		return {
-	// 			success: true,
-	// 			message: "User updated successfully",
-	// 			status: 200,
-	// 			data: user,
-	// 		};
-	// 	} catch (error) {
-	// 		console.log("error", error);
-	// 		return {
-	// 			success: false,
-	// 			message: "Error updating user",
-	// 			status: 500,
-	// 			data: null,
-	// 		};
-	// 	}
-	// },
+	updateUserWorkout: async (req, res) => {
+		try {
+			const userWorkout = await UserWorkoutModel.findById(req.body.workout._id);
+			for (let i = 0; i < userWorkout.exercises.length; i++) {
+				userWorkout.exercises[i] = req.body.workout.exercises[i];
+			}
+			userWorkout.currentWeight = req.body.workout.weight;
+			await userWorkout.save();
+			console.log("userWorkout", userWorkout);
+			return {
+				success: true,
+				message: "User updated successfully",
+				status: 200,
+			};
+		} catch (error) {
+			console.log("error", error);
+			return {
+				success: false,
+				message: "Error updating user",
+				status: 500,
+				data: null,
+			};
+		}
+	},
 };
 
 module.exports = userServices;

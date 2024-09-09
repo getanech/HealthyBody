@@ -4,11 +4,14 @@ import UserContext from "../../../context/UserContext";
 import WorkoutDayViewItem from "../../../components/WorkoutDayViewItem";
 import userRequests from "../../../api/userRequests";
 import Modal from "../../../components/Modal/Modal";
+import getQuote from "../../../api/geminiRequests";
 
 export default function DayView({ date }) {
 	const { user, updateUser } = useContext(UserContext);
 	const [workoutData, setWorkoutData] = useState(null);
 	const [popUpContent, setPopUpContent] = useState(<></>);
+
+	const [motivationalQuote, setMotivationalQuote] = useState(null);
 
 	useEffect(() => {
 		fetchData();
@@ -38,13 +41,21 @@ export default function DayView({ date }) {
 		}
 	};
 
-	const fetchData = () => {
+	const fetchData = async () => {
 		const dayWorkouts = user.workouts.filter((workout) => {
 			return (
 				new Date(date).toISOString().slice(0, 10) ===
 				new Date(workout.date).toISOString().slice(0, 10)
 			);
 		});
+
+		if (dayWorkouts.length == 0) {
+			setMotivationalQuote(null);
+		} else {
+			const geminiQuote = await getQuote(date, dayWorkouts);
+			setMotivationalQuote(geminiQuote);
+		}
+
 		setWorkoutData(dayWorkouts || []);
 	};
 
@@ -75,7 +86,9 @@ export default function DayView({ date }) {
 	return (
 		<div className="dayViewContainer">
 			{popUpContent}
-			<h4>האימון הקרוב: {date.toLocaleDateString("he-IL")}</h4>
+			<h4>{date.toLocaleDateString("he-IL")}</h4>
+			{motivationalQuote && <p className="cloud">{motivationalQuote}</p>}
+			{/* <h4>האימון הקרוב: {date.toLocaleDateString("he-IL")}</h4> */}
 			{showWorkoutData()}
 		</div>
 	);

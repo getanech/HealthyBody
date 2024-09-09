@@ -16,7 +16,11 @@ userRoute.post("/workouts", UsersMiddleware.addUserWorkout);
 
 userRoute.put("/", UsersMiddleware.updateUser);
 userRoute.put("/password/", UsersMiddleware.changePassword);
-userRoute.put("/workouts", UsersMiddleware.updateUserWorkout);
+userRoute.put(
+	"/workouts",
+	UsersMiddleware.updateUserWorkout,
+	UsersMiddleware.getUser
+);
 
 userRoute.delete("/workouts", UsersMiddleware.removeUserWorkout);
 

@@ -92,9 +92,14 @@ const UsersMiddleware = {
 
 	updateUserWorkout: async (req, res, next) => {
 		const response = await userServices.updateUserWorkout(req, res, next);
-		return res
-			.status(response.status)
-			.json({ message: response.message, data: response.data });
+		if (response.status === 200) {
+			req.query.userId = req.body.userId;
+			next();
+		} else {
+			return res
+				.status(response.status)
+				.json({ message: response.message, data: response.data });
+		}
 	},
 };
 
