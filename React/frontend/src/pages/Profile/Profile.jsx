@@ -4,6 +4,7 @@ import "./profile.css";
 import ProfileInfo from "./ProfileInfo";
 import ChangePassword from "./ChangePassword";
 import RenewSubscription from "./RenewSubscription";
+import Statistics from "./Statistics";
 
 export default function Profile() {
 	const [content, setContent] = useState(<></>);
@@ -14,6 +15,10 @@ export default function Profile() {
 
 	const goToProfileInfo = () => {
 		setContent(<ProfileInfo goToRenewSubscription={showRenewSubscription} />);
+	};
+
+	const goToStatistics = () => {
+		setContent(<Statistics />);
 	};
 
 	useEffect(() => {
@@ -29,7 +34,7 @@ export default function Profile() {
 					<button onClick={() => setContent(<ChangePassword />)}>
 						Change Password
 					</button>
-					<button>Statistics</button>
+					<button onClick={goToStatistics}>Statistics</button>
 				</div>
 				{content}
 			</div>

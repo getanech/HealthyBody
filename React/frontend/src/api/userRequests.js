@@ -49,9 +49,7 @@ const userRequests = {
 	 * @return {Promise<Object>} A promise that resolves to the response containing the user's workouts.
 	 */
 	getUserWorkouts: async (userId) => {
-		console.log("userId", userId);
 		const url = `${parameters.baseUrl}/users/workouts`;
-		console.log("url", url);
 		const response = await axios.get(url, { params: { userId } });
 		return response;
 	},

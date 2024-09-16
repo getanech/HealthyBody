@@ -285,7 +285,7 @@ const userServices = {
 			for (let i = 0; i < userWorkout.exercises.length; i++) {
 				userWorkout.exercises[i] = req.body.workout.exercises[i];
 			}
-			userWorkout.currentWeight = req.body.workout.weight;
+			userWorkout.currentWeight = req.body.workout.currentWeight;
 			await userWorkout.save();
 			console.log("userWorkout", userWorkout);
 			return {
