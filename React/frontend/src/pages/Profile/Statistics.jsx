@@ -2,18 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/UserContext";
 import userRequests from "../../api/userRequests";
 
-import { BarChart } from "@mui/x-charts/BarChart";
 import { LineChart } from "@mui/x-charts";
-import { Title } from "chart.js";
 
 export default function Statistics() {
 	const { user } = useContext(UserContext);
 
 	const today = new Date();
 	const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-	console.log("firstDayOfMonth", firstDayOfMonth);
 	const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
-	console.log("lastDayOfMonth", lastDayOfMonth);
 
 	// const monthDates = [];
 	// for (let d = firstDayOfMonth; d <= lastDayOfMonth; d.setDate(d.getDate() + 1)) {
@@ -49,29 +45,33 @@ export default function Statistics() {
 			{/* Weight chart */}
 			{workoutData && (
 				<LineChart
-					// xAxis={[
-					// 	{
-					// 		data: workoutData
-					// 			? workoutData.map((workout) => {
-					//                     const xDataPoint = new Date(workout.date)
-					// 					return new Date(workout.date);
-					// 			  })
-					// 			: [],
-					// 	},
-					// ]}
+					xAxis={[
+						{
+							title: "תאריך",
+							data: workoutData
+								? workoutData.map((workout) => {
+										const xDataPoint = new Date(workout.date);
+										const label =
+											xDataPoint.toLocaleDateString("he-IL").split(".")[0] +
+											"." +
+											xDataPoint.toLocaleDateString("he-IL").split(".")[1];
+
+										return label.toString();
+								  })
+								: [],
+						},
+					]}
 					series={[
 						{
-							// data: [2, 5.5, 2, 8.5, 1.5, 5],
-							// data: workoutData ? workoutData.map((workout) => workout.weight) : [],
 							data: workoutData.map((workout) => {
-								const xDataPoint = new Date(workout.date);
-								return new Date(workout.date);
-							}),
-						},
-						{
-							data: workoutData.map((workout) => {
+								console.log(
+									"workout.currentWeight",
+									new Date(workout.date).toLocaleDateString("he-IL"),
+									workout.currentWeight
+								);
 								return workout.currentWeight;
 							}),
+							label: "משקל",
 						},
 					]}
 					width={700}

@@ -10,7 +10,6 @@ export default function DayView({ date }) {
 	const { user, updateUser } = useContext(UserContext);
 	const [workoutData, setWorkoutData] = useState(null);
 	const [popUpContent, setPopUpContent] = useState(<></>);
-
 	const [motivationalQuote, setMotivationalQuote] = useState(null);
 
 	useEffect(() => {
@@ -43,9 +42,12 @@ export default function DayView({ date }) {
 
 	const fetchData = async () => {
 		const dayWorkouts = user.workouts.filter((workout) => {
+			const workoutDate = new Date(workout.date);
+			const checkedDate = new Date(date);
 			return (
-				new Date(date).toISOString().slice(0, 10) ===
-				new Date(workout.date).toISOString().slice(0, 10)
+				workoutDate.getDate() === checkedDate.getDate() &&
+				workoutDate.getMonth() === checkedDate.getMonth() &&
+				workoutDate.getFullYear() === checkedDate.getFullYear()
 			);
 		});
 
@@ -76,6 +78,7 @@ export default function DayView({ date }) {
 							key={index}
 							workout={workout}
 							submitUpdate={submitUpdate}
+							date={date}
 						/>
 					);
 				})}

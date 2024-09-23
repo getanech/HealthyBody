@@ -72,6 +72,15 @@ const userServices = {
 		}
 	},
 
+	deleteAllUserWorkouts: async (req, res) => {
+		const response = await UserWorkout.deleteMany();
+		// return {
+		// 	status: 200,
+		// 	message: "Workouts deleted successfully",
+		// 	data: response,
+		// };
+	},
+
 	addWorkout: async (req, res) => {
 		try {
 			const user = await User.findOne({ _id: req.query.userId }).populate(
@@ -97,7 +106,10 @@ const userServices = {
 				user.workouts.push(userWorkout);
 			}
 
+			// user.workouts = [];
+			// await UserWorkout.deleteMany();
 			await user.save();
+			console.log("user.workouts", user.workouts);
 
 			return {
 				success: true,

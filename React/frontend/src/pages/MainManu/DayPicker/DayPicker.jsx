@@ -60,6 +60,7 @@ export default function DayPicker({ selectedDate, setDate }) {
 			0
 		);
 		const dateArr = [];
+
 		let currentDate = new Date(firstDay);
 		let dayCounter = 0;
 		while (currentDate.getDay() > 0) {
@@ -93,6 +94,8 @@ export default function DayPicker({ selectedDate, setDate }) {
 					{dateArr.map((date, index) => {
 						let classes = "calendarCell";
 						if (isWorkoutDay(date)) {
+							console.log("date", new Date(date));
+
 							classes += " workoutDay";
 						}
 						return (
@@ -113,16 +116,15 @@ export default function DayPicker({ selectedDate, setDate }) {
 	console.log(user.workouts);
 
 	const isWorkoutDay = (date) => {
-		for (let workout of user.workouts) {
+		const dateObj = new Date(date);
+		return user.workouts.some((workout) => {
 			const workoutDate = new Date(workout.date);
-
-			if (
-				date.toISOString().slice(0, 10) ===
-				workoutDate.toISOString().slice(0, 10)
-			)
-				return true;
-		}
-		return false;
+			return (
+				workoutDate.getDate() === dateObj.getDate() &&
+				workoutDate.getMonth() === dateObj.getMonth() &&
+				workoutDate.getFullYear() === dateObj.getFullYear()
+			);
+		});
 	};
 
 	return (

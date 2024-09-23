@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./workoutDayViewItem.css";
-export default function WorkoutDayViewItem({ workout, submitUpdate }) {
+export default function WorkoutDayViewItem({ workout, submitUpdate, date }) {
 	const [editMode, setEditMode] = useState(false);
 	const [tempWorkoutObject, setTempWorkoutObject] = useState(null);
 
@@ -8,7 +8,11 @@ export default function WorkoutDayViewItem({ workout, submitUpdate }) {
 		setTempWorkoutObject({
 			...workout,
 		});
-	}, [workout]);
+	}, [workout, date]);
+
+	useEffect(() => {
+		console.log("tempWorkoutObject", tempWorkoutObject);
+	}, [tempWorkoutObject]);
 
 	const renderExerciseWeight = (exercise) => {
 		if (!tempWorkoutObject) return <></>;
@@ -47,16 +51,18 @@ export default function WorkoutDayViewItem({ workout, submitUpdate }) {
 				<div className="workoutActionPanel">
 					<div className="workoutCurrentWeight">
 						<label>Weight:</label>
-						<input
-							type="number"
-							defaultValue={workout.currentWeight ? workout.currentWeight : -1}
-							onChange={(e) => {
-								setTempWorkoutObject({
-									...tempWorkoutObject,
-									currentWeight: parseInt(e.target.value),
-								});
-							}}
-						/>
+						{tempWorkoutObject && (
+							<input
+								type="number"
+								defaultValue={tempWorkoutObject.currentWeight}
+								onChange={(e) => {
+									setTempWorkoutObject({
+										...tempWorkoutObject,
+										currentWeight: parseInt(e.target.value),
+									});
+								}}
+							/>
+						)}
 					</div>
 					<div>
 						<button onClick={() => submitUpdate(tempWorkoutObject)}>✌️</button>
