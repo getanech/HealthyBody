@@ -4,7 +4,6 @@ import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import { Route, Routes } from "react-router-dom";
 import Register from "./pages/Register";
-
 import { UserProvider } from "./context/UserContext";
 import Main from "./pages/MainManu";
 import Workout from "./pages/Workout/Workout";
