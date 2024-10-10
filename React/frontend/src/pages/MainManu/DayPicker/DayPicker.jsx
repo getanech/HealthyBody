@@ -117,6 +117,9 @@ export default function DayPicker({ selectedDate, setDate }) {
 
 	const isWorkoutDay = (date) => {
 		const dateObj = new Date(date);
+		if (!user.workouts || !Array.isArray(user.workouts)) {
+			return false;
+		}  
 		return user.workouts.some((workout) => {
 			const workoutDate = new Date(workout.date);
 			return (

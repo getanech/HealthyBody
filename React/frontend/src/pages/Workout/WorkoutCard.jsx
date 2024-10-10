@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 export default function WorkoutCard({ workout, setSelectedWorkout }) {
 	const [tags, setTags] = useState([]);
 	useEffect(() => {

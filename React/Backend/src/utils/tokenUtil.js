@@ -8,7 +8,6 @@ const tokenUtil = {
 			userId: user.id,
 			email: user.email,
 		};
-
 		const options = {
 			expiresIn: "365d",
 		};
