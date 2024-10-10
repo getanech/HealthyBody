@@ -10,10 +10,6 @@ export default function WorkoutDayViewItem({ workout, submitUpdate, date }) {
 		});
 	}, [workout, date]);
 
-	useEffect(() => {
-		console.log("tempWorkoutObject", tempWorkoutObject);
-	}, [tempWorkoutObject]);
-
 	const renderExerciseWeight = (exercise) => {
 		if (!tempWorkoutObject) return <></>;
 		if (editMode)
@@ -50,11 +46,12 @@ export default function WorkoutDayViewItem({ workout, submitUpdate, date }) {
 			<div className="workoutExercises">
 				<div className="workoutActionPanel">
 					<div className="workoutCurrentWeight">
-						<label>Weight:</label>
 						{tempWorkoutObject && (
 							<input
+								contentEditable={editMode}
 								type="number"
-								defaultValue={tempWorkoutObject.currentWeight}
+								value={tempWorkoutObject.currentWeight}
+								// defaultValue={tempWorkoutObject.currentWeight}
 								onChange={(e) => {
 									setTempWorkoutObject({
 										...tempWorkoutObject,
@@ -63,6 +60,7 @@ export default function WorkoutDayViewItem({ workout, submitUpdate, date }) {
 								}}
 							/>
 						)}
+						<label>:משקל</label>
 					</div>
 					<div>
 						<button onClick={() => submitUpdate(tempWorkoutObject)}>✌️</button>

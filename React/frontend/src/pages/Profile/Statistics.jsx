@@ -19,56 +19,91 @@ export default function Statistics() {
 	const [startDate, setStartDate] = useState(firstDayOfMonth);
 	const [endDate, setEndDate] = useState(lastDayOfMonth);
 
-	const [workoutData, setWorkoutData] = useState(null);
+	const [periodWorkoutData, setPeriodWorkoutData] = useState(null);
+
+	const [fullWorkoutData, setFullWorkoutData] = useState(null);
 
 	const fetchData = async () => {
 		try {
 			const response = await userRequests.getUserWorkouts(user._id);
-			const periodWorkouts = response.data.data.filter((workout) => {
-				const date = new Date(workout.date);
-				return date >= startDate && date <= endDate;
-			});
-			setWorkoutData(
-				periodWorkouts.sort((a, b) => new Date(a.date) - new Date(b.date))
-			);
+
+			setFullWorkoutData(response.data.data);
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
 	useEffect(() => {
+		if (!fullWorkoutData) {
+			return;
+		}
+		const periodWorkouts = fullWorkoutData.filter((workout) => {
+			const date = new Date(workout.date);
+			return date >= startDate && date <= endDate;
+		});
+		setPeriodWorkoutData(
+			periodWorkouts.sort((a, b) => new Date(a.date) - new Date(b.date))
+		);
+	}, [startDate, endDate, fullWorkoutData]);
+	+useEffect(() => {
 		fetchData();
 	}, []);
 
 	return (
-		<div className="menuContainer">
-			{/* Weight chart */}
-			{workoutData && (
+		<div className="menuContainer statistics">
+			<div className="dateRange">
+				<label>
+					<input
+						type="date"
+						// defaultValue={startDate}
+						value={startDate}
+						onChange={(e) =>
+							setStartDate(e.target.valueAsDate || e.target.value)
+						}
+					/>
+					:תאריך התחלה
+				</label>
+				<label>
+					<input
+						type="date"
+						// defaultValue={endDate}
+						value={endDate.toLocaleDateString("he-IL")}
+						onChange={(e) => setEndDate(e.target.valueAsDate || e.target.value)}
+					/>
+					:תאריך סיום
+				</label>
+			</div>
+
+			{periodWorkoutData && (
 				<LineChart
+					className="lineChart"
+					colors={["#060000"]}
 					xAxis={[
 						{
 							title: "תאריך",
-							data: workoutData
-								? workoutData.map((workout) => {
+							scaleType: "point",
+							data: periodWorkoutData
+								? periodWorkoutData.map((workout) => {
+										if (workout.currentWeight === -1) {
+											return "-";
+										}
 										const xDataPoint = new Date(workout.date);
 										const label =
 											xDataPoint.toLocaleDateString("he-IL").split(".")[0] +
 											"." +
 											xDataPoint.toLocaleDateString("he-IL").split(".")[1];
 
-										return label.toString();
+										return label;
 								  })
 								: [],
 						},
 					]}
 					series={[
 						{
-							data: workoutData.map((workout) => {
-								console.log(
-									"workout.currentWeight",
-									new Date(workout.date).toLocaleDateString("he-IL"),
-									workout.currentWeight
-								);
+							data: periodWorkoutData.map((workout) => {
+								if (workout.currentWeight === -1) {
+									return null;
+								}
 								return workout.currentWeight;
 							}),
 							label: "משקל",

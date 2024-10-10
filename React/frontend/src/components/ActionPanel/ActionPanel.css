@@ -1,16 +1,25 @@
 .actionPanelContainer {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	/* gap: 0.5rem; */
 	justify-items: center;
 	place-items: center;
 	& button {
 		width: 5rem;
-		height: 5rem;
+		aspect-ratio: 1;
 		border-radius: 50%;
-		background-color: rgba(255, 255, 255, 0.5);
-		color: black;
+		background: rgba(0, 0, 0, 0.5);
+		box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.5);
+		backdrop-filter: blur(4px);
 		font-weight: bold;
+		border: 1px solid white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&:hover {
+			border: 2px solid white;
+		}
 	}
 	width: 100%;
 	height: 100%;
