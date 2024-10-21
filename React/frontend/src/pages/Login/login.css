@@ -49,6 +49,7 @@
 	& input {
 		height: fit-content;
 		font-size: 2rem;
+		color: black;
 	}
 	width: 50%;
 }
