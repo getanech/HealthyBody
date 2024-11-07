@@ -34,9 +34,6 @@ const userServices = {
 
 	getUser: async (req, res) => {
 		try {
-			console.log("req.query", req.query);
-			console.log("req.body", req.body);
-
 			const user = await User.findById(req.query.userId).populate({
 				path: "workouts",
 				model: "UserWorkout",
@@ -267,6 +264,14 @@ const userServices = {
 					success: false,
 					message: "User not found",
 					status: 404,
+					data: null,
+				};
+			}
+			if (user.password === password) {
+				return {
+					success: false,
+					message: "New password cannot be same as old password",
+					status: 200,
 					data: null,
 				};
 			}

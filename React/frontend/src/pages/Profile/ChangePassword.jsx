@@ -25,11 +25,24 @@ export default function ChangePassword() {
 			user,
 			newPassRef.current.value
 		);
-		if (res.data.data) {
-			alert("Password changed successfully");
+
+		if (res.status === 404 || res.data === null) {
+			alert("Oops ! An error occurred. Please try again");
 		} else {
-			alert("Password change failed");
+			alert(res.data.message);
 		}
+
+		// if(res.status === 200) {
+		// 	alert(res.data.message)
+		// }
+		// else{
+		// 	alert(res.data.message)
+		// }
+		// if (res.data.data) {
+		// 	alert("Password changed successfully");
+		// } else {
+		// 	alert("Password change failed");
+		// }
 	};
 
 	const showOldPassword = () => {
@@ -56,7 +69,7 @@ export default function ChangePassword() {
 
 	return (
 		<div className="changePasswordWrapper">
-			<h3>changePassword</h3>
+			<h3>Change Password</h3>
 			{content}
 		</div>
 	);

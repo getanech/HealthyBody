@@ -67,6 +67,9 @@
 	padding: 3rem;
 	background-color: rgba(255, 255, 255, 0.3);
 	border-radius: 15px;
+	button {
+		color: white;
+	}
 }
 
 .renewSubscriptionForm {
