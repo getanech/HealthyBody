@@ -55,6 +55,7 @@ export default function Login() {
 			{popContent}
 			<div className="loginContainer">
 				<div className="loginPanel">
+					<h1>Healthy Body</h1>
 					<h1>Login</h1>
 					<div className="loginForm">
 						<label htmlFor="">Email:</label>

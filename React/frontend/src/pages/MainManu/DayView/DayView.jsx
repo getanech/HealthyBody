@@ -33,7 +33,7 @@ export default function DayView({ date }) {
 			updateUser(res.data.data);
 			setPopUpContent(
 				<Modal
-					message="המשימה עודכנה בהצלחה"
+					message="העדכון הושלם בהצלחה"
 					close={() => setPopUpContent(<></>)}
 				/>
 			);

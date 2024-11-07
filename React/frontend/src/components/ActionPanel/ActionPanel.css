@@ -16,7 +16,9 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-
+		color: white;
+		letter-spacing: 3px;
+		padding: 3rem;
 		&:hover {
 			border: 2px solid white;
 		}
